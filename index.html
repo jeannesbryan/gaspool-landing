@@ -1,0 +1,1576 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gaspool - Alternatif Strava DIY untuk Gowes, Lari, Jalan, dan Mendaki</title>
+  <meta name="description" content="Gaspool adalah aplikasi GPS activity tracker self-hosted dan alternatif Strava versi DIY untuk gowes, lari, jalan, dan mendaki. Fitur: route planner, voice navigation, stealth mode, peleton radar, GPX export, heatmap, public profile, dan flex image/video.">
+  <meta name="keywords" content="Gaspool, alternatif Strava, Strava alternative, GPS tracker Indonesia, aplikasi gowes, cycling tracker, running tracker, route planner, voice navigation, peleton radar, self-hosted GPS tracker, Cloudflare Workers">
+  <meta name="author" content="Gaspool Project">
+  <meta name="robots" content="index, follow, max-image-preview:large">
+  <meta name="application-name" content="Gaspool">
+  <meta name="apple-mobile-web-app-title" content="Gaspool">
+  <meta name="format-detection" content="telephone=no">
+  <meta name="theme-color" content="#FF5F00">
+  <link rel="canonical" href="https://gaspool.npc.my.id/">
+
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Gaspool">
+  <meta property="og:locale" content="id_ID">
+  <meta property="og:url" content="https://gaspool.npc.my.id/">
+  <meta property="og:title" content="Gaspool - Alternatif Strava DIY dan Self-Hosted">
+  <meta property="og:description" content="GPS activity tracker untuk gowes, lari, jalan, dan mendaki dengan route planner, voice navigation, stealth mode, peleton radar, GPX export, heatmap, dan flex image/video.">
+  <meta property="og:image" content="https://gaspool.npc.my.id/assets/android-chrome-512x512.png">
+  <meta property="og:image:alt" content="Logo icon Gaspool">
+  <meta property="og:image:width" content="512">
+  <meta property="og:image:height" content="512">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Gaspool - Alternatif Strava DIY">
+  <meta name="twitter:description" content="Self-hosted GPS tracker dengan route planner, voice navigation, stealth mode, peleton radar, GPX export, heatmap, dan flex image/video.">
+  <meta name="twitter:image" content="https://gaspool.npc.my.id/assets/android-chrome-512x512.png">
+  <link rel="icon" type="image/png" sizes="512x512" href="assets/android-chrome-512x512.png">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebSite",
+        "@id": "https://gaspool.npc.my.id/#website",
+        "name": "Gaspool",
+        "url": "https://gaspool.npc.my.id/",
+        "inLanguage": "id-ID",
+        "description": "Gaspool adalah aplikasi GPS activity tracker self-hosted dan alternatif Strava versi DIY."
+      },
+      {
+        "@type": "SoftwareApplication",
+        "@id": "https://gaspool.npc.my.id/#software",
+        "name": "Gaspool",
+        "url": "https://gaspool.npc.my.id/",
+        "image": "https://gaspool.npc.my.id/assets/android-chrome-512x512.png",
+        "applicationCategory": "HealthApplication",
+        "operatingSystem": "Web",
+        "softwareVersion": "DIY self-hosted",
+        "author": {
+          "@type": "Person",
+          "name": "Jeannes Bryan"
+        },
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "USD"
+        },
+        "description": "Self-hosted GPS tracker untuk gowes, lari, jalan, dan mendaki dengan route planner, voice navigation, peleton radar, stealth mode, GPX export, heatmap, public profile, dan flex image/video.",
+        "featureList": [
+          "GPS activity tracking",
+          "Route planner",
+          "Voice navigation",
+          "Stealth mode",
+          "Peleton radar",
+          "Peleton voice radio",
+          "GPX export",
+          "Heatmap",
+          "Public profile",
+          "Flex image and video recap"
+        ],
+        "sameAs": [
+          "https://github.com/jeannesbryan/gaspool"
+        ]
+      },
+      {
+        "@type": "FAQPage",
+        "@id": "https://gaspool.npc.my.id/#faq",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "Apa itu Gaspool?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Gaspool adalah aplikasi GPS activity tracker self-hosted dan alternatif Strava versi DIY untuk gowes, lari, jalan, dan mendaki."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Apakah Gaspool bisa membuat rute?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Ya. Gaspool memiliki route planner dengan pencarian lokasi, OpenRouteService routing, route library, dan voice navigation."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Apakah Gaspool bisa dipasang sendiri?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Ya. Gaspool dirancang untuk self-hosted deployment di Cloudflare Workers, D1, R2, KV, dan Turnstile."
+            }
+          }
+        ]
+      }
+    ]
+  }
+  </script>
+
+  <style>
+    :root {
+      --primary: #ff5f00;
+      --primary-soft: rgba(255, 95, 0, 0.14);
+      --bg: #0a0a12;
+      --bg-2: #101018;
+      --panel: rgba(255, 255, 255, 0.055);
+      --panel-strong: rgba(255, 255, 255, 0.09);
+      --text: #ffffff;
+      --muted: #a6adbb;
+      --line: rgba(255, 255, 255, 0.1);
+      --blue: #3498db;
+      --green: #2ecc71;
+      --red: #e74c3c;
+      --shadow: 0 24px 80px rgba(0, 0, 0, 0.36);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background:
+        radial-gradient(circle at 18% 0%, rgba(255, 95, 0, 0.18), transparent 28%),
+        radial-gradient(circle at 84% 18%, rgba(52, 152, 219, 0.14), transparent 30%),
+        linear-gradient(180deg, #11111a 0%, var(--bg) 46%, #050507 100%);
+      color: var(--text);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.6;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    img {
+      display: block;
+      max-width: 100%;
+    }
+
+    .page {
+      overflow: hidden;
+    }
+
+    .wrap {
+      width: min(1120px, calc(100% - 32px));
+      margin: 0 auto;
+    }
+
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+      background: rgba(10, 10, 18, 0.72);
+      backdrop-filter: blur(18px);
+    }
+
+    .nav-inner {
+      min-height: 72px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 950;
+      letter-spacing: -1px;
+      font-style: italic;
+      font-size: 1.4rem;
+    }
+
+    .brand-mark {
+      width: 34px;
+      height: 34px;
+      display: grid;
+      place-items: center;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.95);
+      box-shadow: 0 12px 28px rgba(255, 95, 0, 0.34);
+      transform: skew(-8deg);
+      overflow: hidden;
+    }
+
+    .brand-mark img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--muted);
+      font-size: 0.78rem;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.7px;
+    }
+
+    .nav-links a {
+      padding: 9px 10px;
+      border-radius: 8px;
+    }
+
+    .nav-links a:hover {
+      color: #fff;
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .lang-toggle {
+      min-width: 46px;
+      height: 38px;
+      border: 1px solid rgba(255, 95, 0, 0.42);
+      border-radius: 8px;
+      background: rgba(255, 95, 0, 0.12);
+      color: #fff;
+      font-size: 0.74rem;
+      font-weight: 950;
+      letter-spacing: 0.8px;
+      cursor: pointer;
+    }
+
+    .lang-toggle:hover {
+      background: rgba(255, 95, 0, 0.22);
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 44px;
+      padding: 0 16px;
+      border-radius: 8px;
+      border: 1px solid transparent;
+      background: var(--panel-strong);
+      color: #fff;
+      font-size: 0.78rem;
+      font-weight: 950;
+      font-style: italic;
+      text-transform: uppercase;
+      letter-spacing: 0.7px;
+      cursor: pointer;
+      transition: transform 0.18s ease, background 0.18s ease, border-color 0.18s ease;
+    }
+
+    .btn:hover {
+      transform: translateY(-1px);
+      background: rgba(255, 255, 255, 0.13);
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      box-shadow: 0 14px 32px rgba(255, 95, 0, 0.26);
+    }
+
+    .btn-primary:hover {
+      background: #ff741f;
+    }
+
+    .btn-outline {
+      border-color: rgba(255, 95, 0, 0.55);
+      color: var(--primary);
+      background: var(--primary-soft);
+    }
+
+    .hero {
+      min-height: calc(100vh - 72px);
+      display: grid;
+      align-items: center;
+      padding: 54px 0 66px;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 0.9fr) minmax(420px, 1.1fr);
+      gap: 34px;
+      align-items: center;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      width: fit-content;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 16px;
+      padding: 7px 10px;
+      border: 1px solid rgba(255, 95, 0, 0.32);
+      border-radius: 999px;
+      color: #ffb083;
+      background: rgba(255, 95, 0, 0.1);
+      font-size: 0.72rem;
+      font-weight: 950;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .hero h1 {
+      margin: 0;
+      color: #fff;
+      font-size: clamp(3.2rem, 8vw, 6.5rem);
+      line-height: 0.85;
+      font-weight: 1000;
+      font-style: italic;
+      letter-spacing: -4px;
+      text-transform: uppercase;
+    }
+
+    .verb-loop {
+      position: relative;
+      display: block;
+      height: 0.92em;
+      overflow: hidden;
+      color: #fff;
+    }
+
+    .verb-loop span {
+      position: absolute;
+      inset: 0 auto auto 0;
+      display: block;
+      opacity: 0;
+      color: #fff;
+      transform: translateY(36%);
+      animation: verbSwap 8s infinite;
+    }
+
+    .verb-loop span:nth-child(2) {
+      animation-delay: 2s;
+    }
+
+    .verb-loop span:nth-child(3) {
+      animation-delay: 4s;
+    }
+
+    .verb-loop span:nth-child(4) {
+      animation-delay: 6s;
+    }
+
+    @keyframes verbSwap {
+      0%, 6% {
+        opacity: 0;
+        transform: translateY(36%);
+      }
+
+      10%, 25% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      30%, 100% {
+        opacity: 0;
+        transform: translateY(-36%);
+      }
+    }
+
+    .hero h1 .brand-word {
+      color: var(--primary);
+      display: block;
+      text-shadow: 0 0 32px rgba(255, 95, 0, 0.3);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .verb-loop span {
+        animation: none;
+        opacity: 0;
+        transform: none;
+      }
+
+      .verb-loop span:first-child {
+        opacity: 1;
+      }
+    }
+
+    .lead {
+      max-width: 620px;
+      margin: 22px 0 0;
+      color: #d8deea;
+      font-size: 1.06rem;
+      font-weight: 650;
+    }
+
+    .hero-points {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-top: 28px;
+      max-width: 620px;
+    }
+
+    .point {
+      min-height: 86px;
+      padding: 14px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.055);
+    }
+
+    .point strong {
+      display: block;
+      color: var(--primary);
+      font-size: 1.35rem;
+      line-height: 1;
+      font-style: italic;
+    }
+
+    .point span {
+      display: block;
+      margin-top: 8px;
+      color: var(--muted);
+      font-size: 0.72rem;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.7px;
+    }
+
+    .brand-showcase {
+      position: relative;
+      border-radius: 8px;
+      min-height: 560px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 22px;
+      padding: 42px;
+      background:
+        radial-gradient(circle at 50% 45%, rgba(255, 95, 0, 0.22), transparent 34%),
+        radial-gradient(circle at 50% 45%, rgba(41, 11, 100, 0.52), transparent 55%),
+        linear-gradient(145deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.035));
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .brand-showcase::before,
+    .brand-showcase::after {
+      content: "";
+      position: absolute;
+      border-radius: 999px;
+      pointer-events: none;
+    }
+
+    .brand-showcase::before {
+      width: 330px;
+      height: 330px;
+      border: 1px solid rgba(255, 95, 0, 0.22);
+      box-shadow:
+        0 0 0 42px rgba(255, 95, 0, 0.04),
+        0 0 0 88px rgba(255, 255, 255, 0.025);
+      transform: rotate(-10deg);
+    }
+
+    .brand-showcase::after {
+      inset: 18px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 8px;
+    }
+
+    .brand-lockup {
+      position: relative;
+      z-index: 2;
+      width: min(100%, 460px);
+      display: grid;
+      justify-items: center;
+      gap: 18px;
+      text-align: center;
+    }
+
+    .hero-icon {
+      width: clamp(128px, 15vw, 172px);
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.94);
+      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.42), 0 18px 45px rgba(255, 95, 0, 0.22);
+    }
+
+    .hero-logo-panel {
+      width: min(100%, 390px);
+      padding: 10px 14px;
+      border-radius: 16px;
+      background: rgba(255, 255, 255, 0.94);
+      box-shadow: 0 24px 70px rgba(0, 0, 0, 0.34), 0 14px 32px rgba(255, 95, 0, 0.18);
+    }
+
+    .hero-logo {
+      width: 100%;
+      filter: none;
+    }
+
+    .brand-caption {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 34px;
+      padding: 0 12px;
+      border: 1px solid rgba(255, 95, 0, 0.32);
+      border-radius: 999px;
+      color: #ffd0b6;
+      background: rgba(255, 95, 0, 0.1);
+      font-size: 0.72rem;
+      font-weight: 950;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    .mini-metrics {
+      position: relative;
+      z-index: 2;
+      width: 100%;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+    }
+
+    .mini-metric {
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: rgba(5, 5, 7, 0.5);
+      backdrop-filter: blur(12px);
+    }
+
+    .mini-metric strong {
+      display: block;
+      color: var(--primary);
+      font-size: 1rem;
+      line-height: 1;
+      font-weight: 1000;
+      font-style: italic;
+    }
+
+    .mini-metric span {
+      display: block;
+      margin-top: 4px;
+      color: #aeb8c9;
+      font-size: 0.62rem;
+      font-weight: 950;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+    }
+
+    .section {
+      padding: 76px 0;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .section-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 24px;
+      margin-bottom: 24px;
+    }
+
+    .section-kicker {
+      margin: 0 0 8px;
+      color: var(--primary);
+      font-size: 0.74rem;
+      font-weight: 950;
+      letter-spacing: 1.4px;
+      text-transform: uppercase;
+    }
+
+    h2 {
+      margin: 0;
+      color: #fff;
+      font-size: clamp(1.9rem, 4vw, 3.1rem);
+      line-height: 1;
+      letter-spacing: -1.5px;
+      font-weight: 1000;
+      font-style: italic;
+      text-transform: uppercase;
+    }
+
+    .section-desc {
+      max-width: 520px;
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.96rem;
+      font-weight: 650;
+    }
+
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+
+    .card {
+      padding: 18px;
+      border-radius: 8px;
+      border: 1px solid var(--line);
+      background: var(--panel);
+      min-height: 184px;
+    }
+
+    .card .tag {
+      display: inline-flex;
+      margin-bottom: 18px;
+      padding: 5px 8px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.08);
+      color: #dce6f5;
+      font-size: 0.64rem;
+      font-weight: 950;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+    }
+
+    .card h3 {
+      margin: 0;
+      color: #fff;
+      font-size: 1.06rem;
+      line-height: 1.2;
+      font-weight: 950;
+    }
+
+    .card p {
+      margin: 10px 0 0;
+      color: var(--muted);
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+
+    .orange {
+      border-color: rgba(255, 95, 0, 0.28);
+      background: linear-gradient(180deg, rgba(255, 95, 0, 0.11), rgba(255, 255, 255, 0.045));
+    }
+
+    .blue {
+      border-color: rgba(52, 152, 219, 0.26);
+      background: linear-gradient(180deg, rgba(52, 152, 219, 0.1), rgba(255, 255, 255, 0.045));
+    }
+
+    .green {
+      border-color: rgba(46, 204, 113, 0.24);
+      background: linear-gradient(180deg, rgba(46, 204, 113, 0.09), rgba(255, 255, 255, 0.045));
+    }
+
+    .flow {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      counter-reset: flow;
+    }
+
+    .step {
+      position: relative;
+      padding: 18px;
+      min-height: 150px;
+      border-radius: 8px;
+      border: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.052);
+    }
+
+    .step::before {
+      counter-increment: flow;
+      content: counter(flow);
+      display: grid;
+      place-items: center;
+      width: 34px;
+      height: 34px;
+      margin-bottom: 18px;
+      border-radius: 8px;
+      color: #fff;
+      background: var(--primary);
+      font-weight: 950;
+      font-style: italic;
+      box-shadow: 0 12px 26px rgba(255, 95, 0, 0.24);
+    }
+
+    .step h3 {
+      margin: 0;
+      color: #fff;
+      font-size: 1rem;
+      font-weight: 950;
+    }
+
+    .step p {
+      margin: 8px 0 0;
+      color: var(--muted);
+      font-size: 0.86rem;
+      font-weight: 600;
+    }
+
+    .privacy-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+
+    .privacy-box {
+      padding: 18px;
+      border-radius: 8px;
+      border: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .privacy-box h3 {
+      margin: 0 0 10px;
+      color: #fff;
+      font-size: 1rem;
+      font-weight: 950;
+    }
+
+    .privacy-box ul {
+      margin: 0;
+      padding-left: 18px;
+      color: var(--muted);
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+
+    .privacy-box li + li {
+      margin-top: 8px;
+    }
+
+    .cta {
+      padding: 44px;
+      border-radius: 8px;
+      border: 1px solid rgba(255, 95, 0, 0.28);
+      background:
+        linear-gradient(135deg, rgba(255, 95, 0, 0.22), rgba(255, 255, 255, 0.055)),
+        #0b0b12;
+      box-shadow: var(--shadow);
+      text-align: center;
+    }
+
+    .cta h2 {
+      max-width: 700px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .cta p {
+      max-width: 620px;
+      margin: 14px auto 0;
+      color: #d6dce8;
+      font-weight: 650;
+    }
+
+    footer {
+      padding: 34px 0 48px;
+      color: #858da0;
+      font-size: 0.84rem;
+      font-weight: 650;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .footer-inner {
+      display: flex;
+      justify-content: space-between;
+      gap: 18px;
+      align-items: center;
+    }
+
+    .fineprint {
+      max-width: 760px;
+    }
+
+    @media (max-width: 940px) {
+      .hero {
+        min-height: auto;
+      }
+
+      .hero-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-grid {
+        gap: 28px;
+      }
+
+      .feature-grid,
+      .flow {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .nav-links {
+        display: none;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .wrap {
+        width: min(100% - 24px, 1120px);
+      }
+
+      .hero {
+        padding-top: 36px;
+      }
+
+      .hero h1 {
+        letter-spacing: -2.4px;
+      }
+
+      .brand-showcase {
+        min-height: auto;
+        padding: 30px 18px;
+        gap: 18px;
+      }
+
+      .mini-metrics {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-points,
+      .feature-grid,
+      .flow,
+      .privacy-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .section {
+        padding: 56px 0;
+      }
+
+      .section-head {
+        display: block;
+      }
+
+      .section-desc {
+        margin-top: 14px;
+      }
+
+      .cta {
+        padding: 26px;
+      }
+
+      .footer-inner {
+        display: block;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <nav class="nav">
+      <div class="wrap nav-inner">
+        <a class="brand" href="#top" aria-label="Gaspool home">
+          <span class="brand-mark"><img src="assets/android-chrome-512x512.png" alt=""></span>
+          GASPOOL
+        </a>
+        <div class="nav-links" aria-label="Navigasi halaman">
+          <a href="#fitur">Fitur</a>
+          <a href="#alur">Alur</a>
+          <a href="#stack">Atribusi</a>
+          <a href="#limitasi">Limitasi</a>
+          <a href="#privasi">Privasi</a>
+          <a href="#faq">FAQ</a>
+        </div>
+        <button class="lang-toggle" type="button" id="lang-toggle" aria-label="Switch language to English">ID</button>
+      </div>
+    </nav>
+
+    <header class="hero" id="top">
+      <div class="wrap hero-grid">
+        <div>
+          <div class="eyebrow">DIY Strava Alternative - Cloudflare Native</div>
+          <h1 aria-label="Gowes, Lari, Jalan, Mendaki. Gaspool.">
+            <span class="verb-loop" aria-hidden="true">
+              <span>Gowes.</span>
+              <span>Lari.</span>
+              <span>Jalan.</span>
+              <span>Mendaki.</span>
+            </span>
+            <span class="brand-word">Gaspool.</span>
+          </h1>
+          <p class="lead">
+            Gaspool adalah tracker aktivitas mandiri untuk gowes, lari, jalan, dan mendaki:
+            rekam GPS, bikin rute, dengar panduan suara, pantau peleton, lalu flex hasilnya
+            sebagai gambar atau video tanpa bergantung pada aplikasi kebugaran tertutup.
+          </p>
+          <div class="hero-points">
+            <div class="point">
+              <strong>GPS</strong>
+              <span>recording, GPX, heatmap</span>
+            </div>
+            <div class="point">
+              <strong>TTS</strong>
+              <span>voice navigation lokal</span>
+            </div>
+            <div class="point">
+              <strong>DIY</strong>
+              <span>self-hosted di Cloudflare</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="brand-showcase" aria-label="Identitas visual Gaspool">
+          <div class="brand-lockup">
+            <img class="hero-icon" src="assets/android-chrome-512x512.png" alt="Icon Gaspool">
+            <div class="hero-logo-panel">
+              <img class="hero-logo" src="assets/gaspool.png" alt="Logo Gaspool">
+            </div>
+            <div class="brand-caption">Route planner, tracker, navigator</div>
+          </div>
+          <div class="mini-metrics" aria-label="Highlight Gaspool">
+            <div class="mini-metric">
+              <strong>ORS</strong>
+              <span>routing</span>
+            </div>
+            <div class="mini-metric">
+              <strong>TTS</strong>
+              <span>voice nav</span>
+            </div>
+            <div class="mini-metric">
+              <strong>R2</strong>
+              <span>route store</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section class="section" id="fitur">
+        <div class="wrap">
+          <div class="section-head">
+            <div>
+              <p class="section-kicker">Yang Sudah Bisa Dipakai</p>
+              <h2>Fitur Utama</h2>
+            </div>
+            <p class="section-desc">
+              Fitur di bawah disusun dari kemampuan Gaspool yang sudah ada di app:
+              dashboard, tracker, route planner, radar, dan public profile.
+            </p>
+          </div>
+
+          <div class="feature-grid">
+            <article class="card orange">
+              <span class="tag">Tracking</span>
+              <h3>Record aktivitas multi-mode</h3>
+              <p>Rekam ride, run, walk, dan hike dengan jarak, waktu bergerak, speed, pace, elevasi, suhu, map detail, dan GPX export.</p>
+            </article>
+            <article class="card blue">
+              <span class="tag">Route Planner</span>
+              <h3>Cari lokasi, generate rute, simpan</h3>
+              <p>Buat rute dari start, tujuan, dan waypoint. Cari lokasi via geocoding, generate rute ORS, lalu simpan ke route library.</p>
+            </article>
+            <article class="card green">
+              <span class="tag">Navigator</span>
+              <h3>Voice navigation untuk stealth mode</h3>
+              <p>Panduan suara dari Web Speech API, prompt belokan, ulangi instruksi, deteksi off-route, dan reroute ke tujuan yang sama.</p>
+            </article>
+            <article class="card">
+              <span class="tag">Stealth</span>
+              <h3>Layar gelap, hemat visual</h3>
+              <p>Mode stealth meminimalkan render UI saat HP masuk kantong, tetap menjaga GPS, TTS, wake lock, dan blackbox session.</p>
+            </article>
+            <article class="card">
+              <span class="tag">Peleton</span>
+              <h3>Radar grup dan radio suara</h3>
+              <p>Buat room peleton, bagikan link radar keluarga, sinkronkan posisi rider via KV, dan kirim voice radio antar peserta.</p>
+            </article>
+            <article class="card">
+              <span class="tag">Recovery</span>
+              <h3>Blackbox anti sesi hilang</h3>
+              <p>Session resume memakai localStorage dan IndexedDB. Kalau tab mati, prompt resume menampilkan jarak, durasi, titik GPS, route, dan status privasi.</p>
+            </article>
+            <article class="card">
+              <span class="tag">Flex</span>
+              <h3>Gambar dan video recap</h3>
+              <p>Ekspor kartu statistik, share map card, cinematic route recap video, dan peleton recap untuk pamer hasil gowes dengan gaya Gaspool.</p>
+            </article>
+            <article class="card">
+              <span class="tag">Library</span>
+              <h3>Route tersimpan dan heatmap</h3>
+              <p>Kelola rute tersimpan, rename atau hapus rute, buka ulang route planner, dan lihat heatmap dari riwayat aktivitas.</p>
+            </article>
+            <article class="card">
+              <span class="tag">Publik</span>
+              <h3>Profil publik dengan kontrol privat</h3>
+              <p>Aktivitas default private. Rider bisa memilih PUBLIC/PRIVATE, sementara profil publik hanya menampilkan aktivitas yang diset public.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="alur">
+        <div class="wrap">
+          <div class="section-head">
+            <div>
+              <p class="section-kicker">Flow Harian</p>
+              <h2>Dari Rencana Sampai Flexing</h2>
+            </div>
+            <p class="section-desc">
+              Gaspool dirancang untuk dipakai di jalan: sedikit lihat layar, lebih banyak dengar suara,
+              dan tetap punya data lengkap setelah selesai.
+            </p>
+          </div>
+
+          <div class="flow">
+            <article class="step">
+              <h3>Buat atau pilih rute</h3>
+              <p>Cari lokasi, tambah waypoint, generate rute, atau pakai rute yang sudah tersimpan.</p>
+            </article>
+            <article class="step">
+              <h3>Mulai tracking</h3>
+              <p>Tracker memuat route overlay, GPS dot, recenter, tombol suara, stealth mode, dan privacy toggle.</p>
+            </article>
+            <article class="step">
+              <h3>Ikuti suara</h3>
+              <p>TTS memberi arahan belokan. Kalau keluar jalur, Gaspool bisa memberi status off-route dan opsi reroute.</p>
+            </article>
+            <article class="step">
+              <h3>Simpan dan pamer</h3>
+              <p>Aktivitas masuk D1/R2, bisa public atau private, lalu diekspor sebagai GPX, image card, atau video recap.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="stack">
+        <div class="wrap">
+          <div class="section-head">
+            <div>
+            <p class="section-kicker">Transparansi dan Atribusi</p>
+            <h2>API dan Library Yang Dipakai</h2>
+            </div>
+            <p class="section-desc">
+              Gaspool tidak menyembunyikan ketergantungan teknisnya. Beberapa layanan berjalan di server,
+              beberapa berjalan langsung di browser rider.
+            </p>
+          </div>
+
+          <div class="feature-grid">
+            <article class="card orange">
+              <span class="tag">Runtime</span>
+              <h3>Cloudflare Workers</h3>
+              <p>Runtime serverless utama untuk Hono app, dashboard, tracker, public profile, dan API Gaspool.</p>
+            </article>
+            <article class="card blue">
+              <span class="tag">Framework</span>
+              <h3>Hono</h3>
+              <p>Framework web TypeScript yang menangani route, API, auth, dashboard, tracker, dan public profile.</p>
+            </article>
+            <article class="card green">
+              <span class="tag">Database</span>
+              <h3>Cloudflare D1</h3>
+              <p>Database untuk user, ride metadata, statistik, planned route metadata, dan visibility activity.</p>
+            </article>
+            <article class="card">
+              <span class="tag">Storage</span>
+              <h3>Cloudflare R2</h3>
+              <p>Object storage untuk polyline route JSON, planned route JSON, dan audio radio peleton.</p>
+            </article>
+            <article class="card">
+              <span class="tag">Realtime</span>
+              <h3>Cloudflare KV</h3>
+              <p>Storage sementara untuk chunk upload, live radar peleton, dan metadata radio.</p>
+            </article>
+            <article class="card">
+              <span class="tag">Security</span>
+              <h3>Cloudflare Turnstile</h3>
+              <p>Proteksi anti-bot di flow autentikasi, dengan secret disimpan di Worker secret.</p>
+            </article>
+            <article class="card orange">
+              <span class="tag">Routing</span>
+              <h3>OpenRouteService</h3>
+              <p>Directions V2 untuk generate rute dan geocoding search untuk mencari lokasi.</p>
+            </article>
+            <article class="card blue">
+              <span class="tag">Map</span>
+              <h3>OpenStreetMap + CARTO</h3>
+              <p>Data peta dan basemap gelap yang dirender sebagai kanvas map Gaspool.</p>
+            </article>
+            <article class="card green">
+              <span class="tag">Map Engine</span>
+              <h3>Leaflet</h3>
+              <p>Library peta interaktif untuk dashboard, route planner, tracker, radar, heatmap, dan detail activity.</p>
+            </article>
+            <article class="card">
+              <span class="tag">Weather</span>
+              <h3>Open-Meteo</h3>
+              <p>API cuaca untuk mengambil suhu berdasarkan koordinat aktivitas.</p>
+            </article>
+            <article class="card">
+              <span class="tag">Flex Image</span>
+              <h3>html2canvas</h3>
+              <p>Mengubah kartu statistik atau map menjadi gambar untuk fitur flex image.</p>
+            </article>
+            <article class="card">
+              <span class="tag">Optional Sync</span>
+              <h3>Strava API</h3>
+              <p>Opsional, hanya untuk user yang ingin sinkronisasi riwayat aktivitas dari Strava.</p>
+            </article>
+            <article class="card">
+              <span class="tag">Auth</span>
+              <h3>bcryptjs</h3>
+              <p>Hash password akun lokal sebelum disimpan.</p>
+            </article>
+            <article class="card">
+              <span class="tag">Browser APIs</span>
+              <h3>Native Web Platform</h3>
+              <p>Geolocation, IndexedDB, Web Speech API, Wake Lock, MediaRecorder, Canvas, Blob, File, Clipboard, dan Web Share bila tersedia.</p>
+            </article>
+            <article class="card">
+              <span class="tag">Tooling</span>
+              <h3>TypeScript + Wrangler</h3>
+              <p>Tooling build, deploy, dan type generation untuk Cloudflare bindings.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="limitasi">
+        <div class="wrap">
+          <div class="section-head">
+            <div>
+              <p class="section-kicker">Jujur Soal Webapp</p>
+              <h2>Batas Browser, Diakali Sebisanya</h2>
+            </div>
+            <p class="section-desc">
+              Gaspool adalah webapp, bukan aplikasi native. Jadi ada batasan dari browser dan OS,
+              tapi beberapa mitigasi sudah disiapkan agar tetap layak dipakai di jalan.
+            </p>
+          </div>
+
+          <div class="feature-grid">
+            <article class="card orange">
+              <span class="tag">Background GPS</span>
+              <h3>Browser bisa dibatasi OS</h3>
+              <p>Android, iOS, dan mode hemat baterai bisa membatasi tracking saat layar mati. Gaspool memakai Wake Lock, stealth mode, dan resume session untuk mengurangi risiko data hilang.</p>
+            </article>
+            <article class="card blue">
+              <span class="tag">Offline</span>
+              <h3>Tidak semua fitur offline</h3>
+              <p>Blackbox lokal menyimpan titik GPS, tapi route generation, radar peleton, radio, dan upload tetap butuh internet. Untuk ride panjang, tes rute pendek dulu dan hindari force-close browser.</p>
+            </article>
+            <article class="card green">
+              <span class="tag">Suara</span>
+              <h3>TTS tergantung device</h3>
+              <p>Panduan suara memakai Web Speech API bawaan browser. Gaspool memilih suara Indonesia jika tersedia, tapi kualitas dan pilihan voice tetap mengikuti perangkat user.</p>
+            </article>
+            <article class="card">
+              <span class="tag">Akurasi</span>
+              <h3>GPS mengikuti kondisi HP</h3>
+              <p>Cuaca, gedung, posisi HP di tas, dan battery saver bisa membuat track loncat. Pakai HTTPS, izinkan lokasi, matikan optimasi baterai ekstrem, dan aktifkan stealth mode saat butuh hemat daya.</p>
+            </article>
+            <article class="card">
+              <span class="tag">iOS/Safari</span>
+              <h3>Perilaku browser bisa berbeda</h3>
+              <p>iOS dan Safari cenderung lebih ketat soal background task, audio, dan wake lock. Untuk pengalaman paling stabil, Gaspool lebih direkomendasikan di Android Chrome/PWA.</p>
+            </article>
+            <article class="card">
+              <span class="tag">Recovery</span>
+              <h3>Gagal upload bukan akhir cerita</h3>
+              <p>Gaspool memakai IndexedDB blackbox, resume prompt, dan upload bertahap agar sesi lebih tahan banting. Tetap cek hasil setelah finish sebelum menutup browser sepenuhnya.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="privasi">
+        <div class="wrap">
+          <div class="section-head">
+            <div>
+              <p class="section-kicker">Privasi dan Kendali</p>
+              <h2>Default-nya Tidak Pamer</h2>
+            </div>
+            <p class="section-desc">
+              Karena ini tracker lokasi, Gaspool memilih posisi konservatif: aktivitas baru private,
+              public profile hanya menampilkan yang memang kamu buka.
+            </p>
+          </div>
+
+          <div class="privacy-grid">
+            <div class="privacy-box">
+              <h3>Yang disimpan server</h3>
+              <ul>
+                <li>Metadata aktivitas, statistik, dan route reference di D1.</li>
+                <li>Polyline route dan planned route JSON di R2.</li>
+                <li>Data radar/radio peleton sementara di KV.</li>
+                <li>Secret seperti ORS API key tetap berada di Worker secret.</li>
+              </ul>
+            </div>
+            <div class="privacy-box">
+              <h3>Yang dijaga lokal</h3>
+              <ul>
+                <li>Blackbox session memakai localStorage dan IndexedDB untuk recovery.</li>
+                <li>Voice navigation memakai Web Speech API di browser.</li>
+                <li>Stealth mode mengurangi render visual tanpa mematikan pencatatan GPS.</li>
+                <li>Aktivitas default PRIVATE sampai kamu mengubahnya menjadi PUBLIC.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="faq">
+        <div class="wrap">
+          <div class="section-head">
+            <div>
+              <p class="section-kicker">FAQ</p>
+              <h2>Pertanyaan Cepat</h2>
+            </div>
+            <p class="section-desc">
+              Ringkasan singkat untuk pengunjung baru yang mencari alternatif Strava, GPS tracker mandiri,
+              atau aplikasi gowes self-hosted.
+            </p>
+          </div>
+
+          <div class="feature-grid">
+            <article class="card orange">
+              <span class="tag">Dasar</span>
+              <h3>Apa itu Gaspool?</h3>
+              <p>Gaspool adalah aplikasi GPS activity tracker self-hosted dan alternatif Strava versi DIY untuk gowes, lari, jalan, dan mendaki.</p>
+            </article>
+            <article class="card blue">
+              <span class="tag">Rute</span>
+              <h3>Apakah Gaspool bisa membuat rute?</h3>
+              <p>Ya. Gaspool memiliki route planner dengan pencarian lokasi, OpenRouteService routing, route library, dan voice navigation.</p>
+            </article>
+            <article class="card green">
+              <span class="tag">Self-hosted</span>
+              <h3>Apakah Gaspool bisa dipasang sendiri?</h3>
+              <p>Ya. Gaspool dirancang untuk self-hosted deployment di Cloudflare Workers, D1, R2, KV, dan Turnstile.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="wrap">
+          <div class="cta">
+            <div>
+              <p class="section-kicker">Untuk Yang Suka Melalangbuana</p>
+              <h2>Bangun tracker sendiri, tetap bisa gas jauh.</h2>
+              <p>
+                Gaspool cocok untuk rider yang ingin data tetap di rumah sendiri,
+                tapi masih butuh route planner, panduan suara, radar peleton, dan hasil akhir yang layak dipamerkan.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div class="wrap footer-inner">
+        <div class="fineprint">
+          <div style="color:#fff; font-weight:950; margin-bottom:8px;">🄯 2026 Jeannes Bryan</div>
+          <strong>Gaspool</strong> adalah aplikasi DIY/self-hosted. Atribusi peta mengikuti OpenStreetMap contributors,
+          CARTO basemap, Leaflet, OpenRouteService, Open-Meteo, dan layanan Cloudflare yang dipakai pemilik instance.
+        </div>
+        <a class="btn" href="#top">Kembali Atas</a>
+      </div>
+    </footer>
+  </div>
+  <script>
+    const i18n = {
+      en: {
+        title: 'Gaspool - DIY Strava Alternative for Cycling, Running, Walking, and Hiking',
+        description: 'Gaspool is a self-hosted GPS activity tracker and DIY Strava alternative for cycling, running, walking, and hiking. Features include route planner, voice navigation, stealth mode, peleton radar, GPX export, heatmap, public profile, and flex image/video.',
+        ogTitle: 'Gaspool - DIY and Self-Hosted Strava Alternative',
+        ogDescription: 'GPS activity tracker for cycling, running, walking, and hiking with route planner, voice navigation, stealth mode, peleton radar, GPX export, heatmap, and flex image/video.',
+        twitterTitle: 'Gaspool - DIY Strava Alternative',
+        twitterDescription: 'Self-hosted GPS tracker with route planner, voice navigation, stealth mode, peleton radar, GPX export, heatmap, and flex image/video.',
+        jsonDescription: 'Gaspool is a self-hosted GPS activity tracker and DIY Strava alternative.',
+        softwareDescription: 'Self-hosted GPS tracker for cycling, running, walking, and hiking with route planner, voice navigation, peleton radar, stealth mode, GPX export, heatmap, public profile, and flex image/video.',
+        text: {
+          'Fitur': 'Features',
+          'Alur': 'Flow',
+          'Atribusi': 'Attribution',
+          'Limitasi': 'Limits',
+          'Privasi': 'Privacy',
+          'Gowes.': 'Cycle.',
+          'Lari.': 'Run.',
+          'Jalan.': 'Walk.',
+          'Mendaki.': 'Hike.',
+          'DIY Strava Alternative - Cloudflare Native': 'DIY Strava Alternative - Cloudflare Native',
+          'Gaspool adalah tracker aktivitas mandiri untuk gowes, lari, jalan, dan mendaki:\n            rekam GPS, bikin rute, dengar panduan suara, pantau peleton, lalu flex hasilnya\n            sebagai gambar atau video tanpa bergantung pada aplikasi kebugaran tertutup.': 'Gaspool is a self-hosted activity tracker for cycling, running, walking, and hiking: record GPS, plan routes, listen to voice guidance, monitor your peleton, and turn the result into flex-worthy images or videos without depending on closed fitness apps.',
+          'recording, GPX, heatmap': 'recording, GPX, heatmap',
+          'voice navigation lokal': 'local voice navigation',
+          'self-hosted di Cloudflare': 'self-hosted on Cloudflare',
+          'Route planner, tracker, navigator': 'Route planner, tracker, navigator',
+          'routing': 'routing',
+          'voice nav': 'voice nav',
+          'route store': 'route store',
+          'Yang Sudah Bisa Dipakai': 'Ready To Use',
+          'Fitur Utama': 'Core Features',
+          'Fitur di bawah disusun dari kemampuan Gaspool yang sudah ada di app:\n              dashboard, tracker, route planner, radar, dan public profile.': 'These features reflect what Gaspool already ships with: dashboard, tracker, route planner, radar, and public profile.',
+          'Tracking': 'Tracking',
+          'Record aktivitas multi-mode': 'Multi-mode activity recording',
+          'Rekam ride, run, walk, dan hike dengan jarak, waktu bergerak, speed, pace, elevasi, suhu, map detail, dan GPX export.': 'Record rides, runs, walks, and hikes with distance, moving time, speed, pace, elevation, temperature, map detail, and GPX export.',
+          'Route Planner': 'Route Planner',
+          'Cari lokasi, generate rute, simpan': 'Search places, generate routes, save them',
+          'Buat rute dari start, tujuan, dan waypoint. Cari lokasi via geocoding, generate rute ORS, lalu simpan ke route library.': 'Create routes from start, destination, and waypoints. Search places via geocoding, generate ORS routes, then save them to the route library.',
+          'Navigator': 'Navigator',
+          'Voice navigation untuk stealth mode': 'Voice navigation for stealth mode',
+          'Panduan suara dari Web Speech API, prompt belokan, ulangi instruksi, deteksi off-route, dan reroute ke tujuan yang sama.': 'Voice guidance via Web Speech API, turn prompts, repeat instruction, off-route detection, and reroute to the same destination.',
+          'Stealth': 'Stealth',
+          'Layar gelap, hemat visual': 'Dark screen, lighter visual rendering',
+          'Mode stealth meminimalkan render UI saat HP masuk kantong, tetap menjaga GPS, TTS, wake lock, dan blackbox session.': 'Stealth mode reduces UI rendering when the phone is in your pocket while keeping GPS, TTS, wake lock, and blackbox session alive.',
+          'Peleton': 'Peleton',
+          'Radar grup dan radio suara': 'Group radar and voice radio',
+          'Buat room peleton, bagikan link radar keluarga, sinkronkan posisi rider via KV, dan kirim voice radio antar peserta.': 'Create a peleton room, share family radar links, sync rider positions via KV, and send voice radio between participants.',
+          'Recovery': 'Recovery',
+          'Blackbox anti sesi hilang': 'Blackbox against lost sessions',
+          'Session resume memakai localStorage dan IndexedDB. Kalau tab mati, prompt resume menampilkan jarak, durasi, titik GPS, route, dan status privasi.': 'Session resume uses localStorage and IndexedDB. If the tab dies, the resume prompt shows distance, duration, GPS point count, route, and privacy status.',
+          'Flex': 'Flex',
+          'Gambar dan video recap': 'Image and video recaps',
+          'Ekspor kartu statistik, share map card, cinematic route recap video, dan peleton recap untuk pamer hasil gowes dengan gaya Gaspool.': 'Export stat cards, share map cards, cinematic route recap videos, and peleton recaps in Gaspool style.',
+          'Library': 'Library',
+          'Route tersimpan dan heatmap': 'Saved routes and heatmap',
+          'Kelola rute tersimpan, rename atau hapus rute, buka ulang route planner, dan lihat heatmap dari riwayat aktivitas.': 'Manage saved routes, rename or delete routes, reopen the route planner, and view heatmaps from activity history.',
+          'Publik': 'Public',
+          'Profil publik dengan kontrol privat': 'Public profile with privacy control',
+          'Aktivitas default private. Rider bisa memilih PUBLIC/PRIVATE, sementara profil publik hanya menampilkan aktivitas yang diset public.': 'Activities are private by default. Riders can choose PUBLIC/PRIVATE, while the public profile only shows public activities.',
+          'Flow Harian': 'Daily Flow',
+          'Dari Rencana Sampai Flexing': 'From Planning To Flexing',
+          'Gaspool dirancang untuk dipakai di jalan: sedikit lihat layar, lebih banyak dengar suara,\n              dan tetap punya data lengkap setelah selesai.': 'Gaspool is designed for real rides: look at the screen less, listen more, and still keep complete data after finishing.',
+          'Buat atau pilih rute': 'Create or pick a route',
+          'Cari lokasi, tambah waypoint, generate rute, atau pakai rute yang sudah tersimpan.': 'Search a location, add waypoints, generate a route, or use a saved route.',
+          'Mulai tracking': 'Start tracking',
+          'Tracker memuat route overlay, GPS dot, recenter, tombol suara, stealth mode, dan privacy toggle.': 'The tracker loads route overlay, GPS dot, recenter, voice controls, stealth mode, and privacy toggle.',
+          'Ikuti suara': 'Follow the voice',
+          'TTS memberi arahan belokan. Kalau keluar jalur, Gaspool bisa memberi status off-route dan opsi reroute.': 'TTS gives turn guidance. If you leave the route, Gaspool can show off-route status and reroute options.',
+          'Simpan dan pamer': 'Save and flex',
+          'Aktivitas masuk D1/R2, bisa public atau private, lalu diekspor sebagai GPX, image card, atau video recap.': 'Activities go to D1/R2, can be public or private, then exported as GPX, image cards, or video recaps.',
+          'Transparansi dan Atribusi': 'Transparency and Attribution',
+          'API dan Library Yang Dipakai': 'APIs and Libraries Used',
+          'Gaspool tidak menyembunyikan ketergantungan teknisnya. Beberapa layanan berjalan di server,\n              beberapa berjalan langsung di browser rider.': 'Gaspool does not hide its technical dependencies. Some services run on the server, while others run directly in the rider browser.',
+          'Runtime': 'Runtime',
+          'Framework': 'Framework',
+          'Database': 'Database',
+          'Storage': 'Storage',
+          'Realtime': 'Realtime',
+          'Security': 'Security',
+          'Routing': 'Routing',
+          'Map': 'Map',
+          'Map Engine': 'Map Engine',
+          'Weather': 'Weather',
+          'Flex Image': 'Flex Image',
+          'Optional Sync': 'Optional Sync',
+          'Auth': 'Auth',
+          'Browser APIs': 'Browser APIs',
+          'Tooling': 'Tooling',
+          'Cloudflare Workers': 'Cloudflare Workers',
+          'Runtime serverless utama untuk Hono app, dashboard, tracker, public profile, dan API Gaspool.': 'The main serverless runtime for the Hono app, dashboard, tracker, public profile, and Gaspool API.',
+          'Hono': 'Hono',
+          'Framework web TypeScript yang menangani route, API, auth, dashboard, tracker, dan public profile.': 'TypeScript web framework handling routes, API, auth, dashboard, tracker, and public profile.',
+          'Cloudflare D1': 'Cloudflare D1',
+          'Database untuk user, ride metadata, statistik, planned route metadata, dan visibility activity.': 'Database for users, ride metadata, stats, planned route metadata, and activity visibility.',
+          'Cloudflare R2': 'Cloudflare R2',
+          'Object storage untuk polyline route JSON, planned route JSON, dan audio radio peleton.': 'Object storage for route polyline JSON, planned route JSON, and peleton radio audio.',
+          'Cloudflare KV': 'Cloudflare KV',
+          'Storage sementara untuk chunk upload, live radar peleton, dan metadata radio.': 'Temporary storage for upload chunks, live peleton radar, and radio metadata.',
+          'Cloudflare Turnstile': 'Cloudflare Turnstile',
+          'Proteksi anti-bot di flow autentikasi, dengan secret disimpan di Worker secret.': 'Anti-bot protection for authentication, with secrets stored in Worker secrets.',
+          'OpenRouteService': 'OpenRouteService',
+          'Directions V2 untuk generate rute dan geocoding search untuk mencari lokasi.': 'Directions V2 for route generation and geocoding search for finding locations.',
+          'OpenStreetMap + CARTO': 'OpenStreetMap + CARTO',
+          'Data peta dan basemap gelap yang dirender sebagai kanvas map Gaspool.': 'Map data and dark basemap rendered as the Gaspool map canvas.',
+          'Leaflet': 'Leaflet',
+          'Library peta interaktif untuk dashboard, route planner, tracker, radar, heatmap, dan detail activity.': 'Interactive map library for dashboard, route planner, tracker, radar, heatmap, and activity detail.',
+          'Open-Meteo': 'Open-Meteo',
+          'API cuaca untuk mengambil suhu berdasarkan koordinat aktivitas.': 'Weather API for fetching temperature by activity coordinates.',
+          'html2canvas': 'html2canvas',
+          'Mengubah kartu statistik atau map menjadi gambar untuk fitur flex image.': 'Turns stat cards or maps into images for the flex image feature.',
+          'Strava API': 'Strava API',
+          'Opsional, hanya untuk user yang ingin sinkronisasi riwayat aktivitas dari Strava.': 'Optional, only for users who want to sync activity history from Strava.',
+          'bcryptjs': 'bcryptjs',
+          'Hash password akun lokal sebelum disimpan.': 'Hashes local account passwords before storage.',
+          'Native Web Platform': 'Native Web Platform',
+          'Geolocation, IndexedDB, Web Speech API, Wake Lock, MediaRecorder, Canvas, Blob, File, Clipboard, dan Web Share bila tersedia.': 'Geolocation, IndexedDB, Web Speech API, Wake Lock, MediaRecorder, Canvas, Blob, File, Clipboard, and Web Share when available.',
+          'TypeScript + Wrangler': 'TypeScript + Wrangler',
+          'Tooling build, deploy, dan type generation untuk Cloudflare bindings.': 'Build, deploy, and type generation tooling for Cloudflare bindings.',
+          'Jujur Soal Webapp': 'Honest About Web Apps',
+          'Batas Browser, Diakali Sebisanya': 'Browser Limits, Mitigated Where Possible',
+          'Gaspool adalah webapp, bukan aplikasi native. Jadi ada batasan dari browser dan OS,\n              tapi beberapa mitigasi sudah disiapkan agar tetap layak dipakai di jalan.': 'Gaspool is a web app, not a native app. Browser and OS limits exist, but several mitigations are built in so it remains practical on the road.',
+          'Background GPS': 'Background GPS',
+          'Browser bisa dibatasi OS': 'Browsers can be limited by the OS',
+          'Android, iOS, dan mode hemat baterai bisa membatasi tracking saat layar mati. Gaspool memakai Wake Lock, stealth mode, dan resume session untuk mengurangi risiko data hilang.': 'Android, iOS, and battery saver modes can restrict tracking when the screen is off. Gaspool uses Wake Lock, stealth mode, and session resume to reduce the risk of lost data.',
+          'Offline': 'Offline',
+          'Tidak semua fitur offline': 'Not every feature works offline',
+          'Blackbox lokal menyimpan titik GPS, tapi route generation, radar peleton, radio, dan upload tetap butuh internet. Untuk ride panjang, tes rute pendek dulu dan hindari force-close browser.': 'The local blackbox stores GPS points, but route generation, peleton radar, radio, and upload still need internet. For long rides, test a short route first and avoid force-closing the browser.',
+          'Suara': 'Voice',
+          'TTS tergantung device': 'TTS depends on the device',
+          'Panduan suara memakai Web Speech API bawaan browser. Gaspool memilih suara Indonesia jika tersedia, tapi kualitas dan pilihan voice tetap mengikuti perangkat user.': 'Voice guidance uses the browser Web Speech API. Gaspool selects Indonesian voices when available, but voice quality and options still depend on the user device.',
+          'Akurasi': 'Accuracy',
+          'GPS mengikuti kondisi HP': 'GPS follows phone conditions',
+          'Cuaca, gedung, posisi HP di tas, dan battery saver bisa membuat track loncat. Pakai HTTPS, izinkan lokasi, matikan optimasi baterai ekstrem, dan aktifkan stealth mode saat butuh hemat daya.': 'Weather, buildings, phone position inside a bag, and battery saver can cause GPS jumps. Use HTTPS, allow location, disable aggressive battery optimization, and enable stealth mode when saving power matters.',
+          'iOS/Safari': 'iOS/Safari',
+          'Perilaku browser bisa berbeda': 'Browser behavior can differ',
+          'iOS dan Safari cenderung lebih ketat soal background task, audio, dan wake lock. Untuk pengalaman paling stabil, Gaspool lebih direkomendasikan di Android Chrome/PWA.': 'iOS and Safari tend to be stricter with background tasks, audio, and wake lock. For the most stable experience, Gaspool is recommended on Android Chrome/PWA.',
+          'Gagal upload bukan akhir cerita': 'Failed uploads are not the end',
+          'Gaspool memakai IndexedDB blackbox, resume prompt, dan upload bertahap agar sesi lebih tahan banting. Tetap cek hasil setelah finish sebelum menutup browser sepenuhnya.': 'Gaspool uses IndexedDB blackbox, resume prompts, and staged uploads to make sessions more resilient. Still check your result after finishing before fully closing the browser.',
+          'Privasi dan Kendali': 'Privacy and Control',
+          'Default-nya Tidak Pamer': 'Private By Default',
+          'Karena ini tracker lokasi, Gaspool memilih posisi konservatif: aktivitas baru private,\n              public profile hanya menampilkan yang memang kamu buka.': 'Because this is a location tracker, Gaspool takes a conservative stance: new activities are private, and the public profile only shows what you explicitly publish.',
+          'Yang disimpan server': 'Stored on the server',
+          'Metadata aktivitas, statistik, dan route reference di D1.': 'Activity metadata, stats, and route references in D1.',
+          'Polyline route dan planned route JSON di R2.': 'Route polylines and planned route JSON in R2.',
+          'Data radar/radio peleton sementara di KV.': 'Temporary peleton radar/radio data in KV.',
+          'Secret seperti ORS API key tetap berada di Worker secret.': 'Secrets such as the ORS API key stay in Worker secrets.',
+          'Yang dijaga lokal': 'Kept locally',
+          'Blackbox session memakai localStorage dan IndexedDB untuk recovery.': 'Blackbox sessions use localStorage and IndexedDB for recovery.',
+          'Voice navigation memakai Web Speech API di browser.': 'Voice navigation uses the browser Web Speech API.',
+          'Stealth mode mengurangi render visual tanpa mematikan pencatatan GPS.': 'Stealth mode reduces visual rendering without stopping GPS recording.',
+          'Aktivitas default PRIVATE sampai kamu mengubahnya menjadi PUBLIC.': 'Activities stay PRIVATE by default until you switch them to PUBLIC.',
+          'Pertanyaan Cepat': 'Quick Questions',
+          'Ringkasan singkat untuk pengunjung baru yang mencari alternatif Strava, GPS tracker mandiri,\n              atau aplikasi gowes self-hosted.': 'A quick summary for visitors looking for a Strava alternative, self-hosted GPS tracker, or cycling web app.',
+          'Dasar': 'Basics',
+          'Apa itu Gaspool?': 'What is Gaspool?',
+          'Gaspool adalah aplikasi GPS activity tracker self-hosted dan alternatif Strava versi DIY untuk gowes, lari, jalan, dan mendaki.': 'Gaspool is a self-hosted GPS activity tracker and DIY Strava alternative for cycling, running, walking, and hiking.',
+          'Rute': 'Routes',
+          'Apakah Gaspool bisa membuat rute?': 'Can Gaspool create routes?',
+          'Ya. Gaspool memiliki route planner dengan pencarian lokasi, OpenRouteService routing, route library, dan voice navigation.': 'Yes. Gaspool has a route planner with place search, OpenRouteService routing, route library, and voice navigation.',
+          'Self-hosted': 'Self-hosted',
+          'Apakah Gaspool bisa dipasang sendiri?': 'Can Gaspool be self-hosted?',
+          'Ya. Gaspool dirancang untuk self-hosted deployment di Cloudflare Workers, D1, R2, KV, dan Turnstile.': 'Yes. Gaspool is designed for self-hosted deployment on Cloudflare Workers, D1, R2, KV, and Turnstile.',
+          'Untuk Yang Suka Melalangbuana': 'For People Who Wander Far',
+          'Bangun tracker sendiri, tetap bisa gas jauh.': 'Build your own tracker, still go far.',
+          'Gaspool cocok untuk rider yang ingin data tetap di rumah sendiri,\n                tapi masih butuh route planner, panduan suara, radar peleton, dan hasil akhir yang layak dipamerkan.': 'Gaspool is for riders who want to keep their data close, while still needing route planning, voice guidance, peleton radar, and results worth showing off.',
+          '🄯 2026 Jeannes Bryan': '🄯 2026 Jeannes Bryan',
+          'Gaspool': 'Gaspool',
+          'adalah aplikasi DIY/self-hosted. Atribusi peta mengikuti OpenStreetMap contributors,\n          CARTO basemap, Leaflet, OpenRouteService, Open-Meteo, dan layanan Cloudflare yang dipakai pemilik instance.': 'is a DIY/self-hosted app. Map attribution follows OpenStreetMap contributors, CARTO basemap, Leaflet, OpenRouteService, Open-Meteo, and the Cloudflare services used by the instance owner.',
+          'Kembali Atas': 'Back To Top'
+        }
+      }
+    };
+
+    const originalTextNodes = [];
+
+    function collectTextNodes(root) {
+      const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
+        acceptNode(node) {
+          if (!node.nodeValue.trim()) return NodeFilter.FILTER_REJECT;
+          const parent = node.parentElement;
+          if (!parent) return NodeFilter.FILTER_REJECT;
+          if (['SCRIPT', 'STYLE'].includes(parent.tagName)) return NodeFilter.FILTER_REJECT;
+          return NodeFilter.FILTER_ACCEPT;
+        }
+      });
+
+      let node;
+      while ((node = walker.nextNode())) {
+        originalTextNodes.push({
+          node,
+          value: node.nodeValue
+        });
+      }
+    }
+
+    function normalizeText(value) {
+      return String(value).replace(/\s+/g, ' ').trim();
+    }
+
+    function setMeta(selector, value) {
+      const el = document.querySelector(selector);
+      if (el) el.setAttribute('content', value);
+    }
+
+    function updateJsonLd(lang) {
+      const script = document.querySelector('script[type="application/ld+json"]');
+      if (!script || !script.dataset.originalJson) return;
+      const data = JSON.parse(script.dataset.originalJson);
+
+      if (lang === 'en') {
+        const site = data['@graph'][0];
+        const app = data['@graph'][1];
+        const faq = data['@graph'][2];
+
+        site.description = i18n.en.jsonDescription;
+        app.description = i18n.en.softwareDescription;
+        faq.mainEntity[0].acceptedAnswer.text = 'Gaspool is a self-hosted GPS activity tracker and DIY Strava alternative for cycling, running, walking, and hiking.';
+        faq.mainEntity[1].acceptedAnswer.text = 'Yes. Gaspool has a route planner with place search, OpenRouteService routing, route library, and voice navigation.';
+        faq.mainEntity[2].acceptedAnswer.text = 'Yes. Gaspool is designed for self-hosted deployment on Cloudflare Workers, D1, R2, KV, and Turnstile.';
+      }
+
+      script.textContent = JSON.stringify(data, null, 2);
+    }
+
+    function setLanguage(lang) {
+      const isEn = lang === 'en';
+      const dict = i18n.en.text;
+      const normalizedDict = Object.entries(dict).reduce((acc, entry) => {
+        acc[normalizeText(entry[0])] = entry[1];
+        return acc;
+      }, {});
+
+      document.documentElement.lang = isEn ? 'en' : 'id';
+      document.title = isEn ? i18n.en.title : document.documentElement.dataset.originalTitle;
+      setMeta('meta[name="description"]', isEn ? i18n.en.description : document.documentElement.dataset.originalDescription);
+      setMeta('meta[property="og:title"]', isEn ? i18n.en.ogTitle : document.documentElement.dataset.originalOgTitle);
+      setMeta('meta[property="og:description"]', isEn ? i18n.en.ogDescription : document.documentElement.dataset.originalOgDescription);
+      setMeta('meta[name="twitter:title"]', isEn ? i18n.en.twitterTitle : document.documentElement.dataset.originalTwitterTitle);
+      setMeta('meta[name="twitter:description"]', isEn ? i18n.en.twitterDescription : document.documentElement.dataset.originalTwitterDescription);
+
+      originalTextNodes.forEach(item => {
+        if (!isEn) {
+          item.node.nodeValue = item.value;
+          return;
+        }
+
+        const normalized = normalizeText(item.value);
+        const translated = dict[item.value.trim()] || normalizedDict[normalized];
+
+        if (translated) {
+          const leading = item.value.match(/^\s*/)[0];
+          const trailing = item.value.match(/\s*$/)[0];
+          item.node.nodeValue = leading + translated + trailing;
+        }
+      });
+
+      updateJsonLd(lang);
+
+      const toggle = document.getElementById('lang-toggle');
+      if (toggle) {
+        toggle.textContent = isEn ? 'EN' : 'ID';
+        toggle.setAttribute('aria-label', isEn ? 'Ganti bahasa ke Indonesia' : 'Switch language to English');
+      }
+
+      try {
+        localStorage.setItem('gaspool_landing_lang', lang);
+      } catch(e) {}
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const json = document.querySelector('script[type="application/ld+json"]');
+      if (json) json.dataset.originalJson = json.textContent;
+
+      document.documentElement.dataset.originalTitle = document.title;
+      document.documentElement.dataset.originalDescription = document.querySelector('meta[name="description"]')?.content || '';
+      document.documentElement.dataset.originalOgTitle = document.querySelector('meta[property="og:title"]')?.content || '';
+      document.documentElement.dataset.originalOgDescription = document.querySelector('meta[property="og:description"]')?.content || '';
+      document.documentElement.dataset.originalTwitterTitle = document.querySelector('meta[name="twitter:title"]')?.content || '';
+      document.documentElement.dataset.originalTwitterDescription = document.querySelector('meta[name="twitter:description"]')?.content || '';
+
+      collectTextNodes(document.body);
+
+      const toggle = document.getElementById('lang-toggle');
+      let current = 'id';
+
+      try {
+        current = localStorage.getItem('gaspool_landing_lang') || 'id';
+      } catch(e) {}
+
+      setLanguage(current === 'en' ? 'en' : 'id');
+
+      if (toggle) {
+        toggle.addEventListener('click', () => {
+          const next = document.documentElement.lang === 'en' ? 'id' : 'en';
+          setLanguage(next);
+        });
+      }
+    });
+  </script>
+</body>
+</html>
