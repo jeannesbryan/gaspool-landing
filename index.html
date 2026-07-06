@@ -4,8 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Gaspool - Alternatif Strava DIY untuk Gowes, Lari, Jalan, dan Mendaki</title>
-  <meta name="description" content="Gaspool adalah aplikasi GPS activity tracker self-hosted dan alternatif Strava versi DIY untuk gowes, lari, jalan, dan mendaki. Fitur: route planner, voice navigation, stealth mode, peleton radar, GPX export, heatmap, public profile, dan flex image/video.">
-  <meta name="keywords" content="Gaspool, alternatif Strava, Strava alternative, GPS tracker Indonesia, aplikasi gowes, cycling tracker, running tracker, route planner, voice navigation, peleton radar, self-hosted GPS tracker, Cloudflare Workers">
+  <meta name="description" content="Gaspool adalah aplikasi GPS activity tracker self-hosted dan alternatif Strava versi DIY untuk gowes, lari, jalan, dan mendaki. Fitur: route planner, voice navigation, stealth mode, peleton radar, GPX import/export, heatmap, personal best, matched activities, personal segments, public profile, dan flex image/video.">
+  <meta name="keywords" content="Gaspool, alternatif Strava, Strava alternative, GPS tracker Indonesia, aplikasi gowes, cycling tracker, running tracker, hiking tracker, route planner, voice navigation, peleton radar, personal best, personal segments, self-hosted GPS tracker, Cloudflare Workers">
   <meta name="author" content="Gaspool Project">
   <meta name="robots" content="index, follow, max-image-preview:large">
   <meta name="application-name" content="Gaspool">
@@ -19,14 +19,14 @@
   <meta property="og:locale" content="id_ID">
   <meta property="og:url" content="https://gaspool.npc.my.id/">
   <meta property="og:title" content="Gaspool - Alternatif Strava DIY dan Self-Hosted">
-  <meta property="og:description" content="GPS activity tracker untuk gowes, lari, jalan, dan mendaki dengan route planner, voice navigation, stealth mode, peleton radar, GPX export, heatmap, dan flex image/video.">
+  <meta property="og:description" content="GPS activity tracker untuk gowes, lari, jalan, dan mendaki dengan route planner, voice navigation, stealth mode, peleton radar, GPX import/export, heatmap, personal best, personal segments, dan flex image/video.">
   <meta property="og:image" content="https://gaspool.npc.my.id/assets/android-chrome-512x512.png">
   <meta property="og:image:alt" content="Logo icon Gaspool">
   <meta property="og:image:width" content="512">
   <meta property="og:image:height" content="512">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Gaspool - Alternatif Strava DIY">
-  <meta name="twitter:description" content="Self-hosted GPS tracker dengan route planner, voice navigation, stealth mode, peleton radar, GPX export, heatmap, dan flex image/video.">
+  <meta name="twitter:description" content="Self-hosted GPS tracker dengan route planner, voice navigation, stealth mode, peleton radar, GPX import/export, heatmap, personal best, personal segments, dan flex image/video.">
   <meta name="twitter:image" content="https://gaspool.npc.my.id/assets/android-chrome-512x512.png">
   <link rel="icon" type="image/png" sizes="512x512" href="assets/android-chrome-512x512.png">
 
@@ -60,7 +60,7 @@
           "price": "0",
           "priceCurrency": "USD"
         },
-        "description": "Self-hosted GPS tracker untuk gowes, lari, jalan, dan mendaki dengan route planner, voice navigation, peleton radar, stealth mode, GPX export, heatmap, public profile, dan flex image/video.",
+        "description": "Self-hosted GPS tracker untuk gowes, lari, jalan, dan mendaki dengan route planner, voice navigation, peleton radar, stealth mode, GPX import/export, heatmap, personal best, matched activities, personal segments, public profile, dan flex image/video.",
         "featureList": [
           "GPS activity tracking",
           "Route planner",
@@ -68,8 +68,12 @@
           "Stealth mode",
           "Peleton radar",
           "Peleton voice radio",
+          "GPX route import",
           "GPX export",
           "Heatmap",
+          "Personal best",
+          "Matched activities",
+          "Personal segments",
           "Public profile",
           "Flex image and video recap"
         ],
@@ -103,6 +107,14 @@
             "acceptedAnswer": {
               "@type": "Answer",
               "text": "Ya. Gaspool dirancang untuk self-hosted deployment di Cloudflare Workers, D1, R2, KV, dan Turnstile."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Apakah Gaspool punya personal segments?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Ya. Gaspool memiliki personal segments dari aktivitas sendiri dan mencocokkan effort terbaik dari riwayat pribadi tanpa leaderboard global."
             }
           }
         ]
@@ -975,7 +987,7 @@
             <article class="card">
               <span class="tag">Peleton</span>
               <h3>Radar grup dan radio suara</h3>
-              <p>Buat room peleton, bagikan link radar keluarga, sinkronkan posisi rider via KV, dan kirim voice radio antar peserta.</p>
+              <p>Buat room peleton, bagikan link radar keluarga, sinkronkan posisi peserta via KV, dan kirim voice radio antar peserta.</p>
             </article>
             <article class="card">
               <span class="tag">Recovery</span>
@@ -989,13 +1001,23 @@
             </article>
             <article class="card">
               <span class="tag">Library</span>
-              <h3>Route tersimpan dan heatmap</h3>
-              <p>Kelola rute tersimpan, rename atau hapus rute, buka ulang route planner, dan lihat heatmap dari riwayat aktivitas.</p>
+              <h3>Route library dan heatmap</h3>
+              <p>Kelola rute tersimpan, pin rute favorit, export route plan ke GPX, buka ulang route planner, dan lihat heatmap dari riwayat aktivitas.</p>
+            </article>
+            <article class="card orange">
+              <span class="tag">Insight</span>
+              <h3>Personal best dan rute mirip</h3>
+              <p>Lihat rekor pribadi, auto split per kilometer, dan bandingkan aktivitas dengan rute historis yang mirip tanpa leaderboard publik.</p>
+            </article>
+            <article class="card blue">
+              <span class="tag">Segments</span>
+              <h3>Personal segments dari aktivitas sendiri</h3>
+              <p>Buat segmen dari potongan track, lalu Gaspool mencari effort terbaik dari riwayat aktivitas pribadi.</p>
             </article>
             <article class="card">
               <span class="tag">Publik</span>
               <h3>Profil publik dengan kontrol privat</h3>
-              <p>Aktivitas default private. Rider bisa memilih PUBLIC/PRIVATE, sementara profil publik hanya menampilkan aktivitas yang diset public.</p>
+              <p>Aktivitas default private. Pengguna bisa memilih PUBLIC/PRIVATE, sementara profil publik hanya menampilkan aktivitas yang diset public.</p>
             </article>
           </div>
         </div>
@@ -1017,7 +1039,7 @@
           <div class="flow">
             <article class="step">
               <h3>Buat atau pilih rute</h3>
-              <p>Cari lokasi, tambah waypoint, generate rute, atau pakai rute yang sudah tersimpan.</p>
+              <p>Cari lokasi, tambah waypoint, generate rute, import GPX, pin rute favorit, atau pakai rute yang sudah tersimpan.</p>
             </article>
             <article class="step">
               <h3>Mulai tracking</h3>
@@ -1029,7 +1051,7 @@
             </article>
             <article class="step">
               <h3>Simpan dan pamer</h3>
-              <p>Aktivitas masuk D1/R2, bisa public atau private, lalu diekspor sebagai GPX, image card, atau video recap.</p>
+              <p>Aktivitas masuk D1/R2, bisa public atau private, lalu dianalisis sebagai split, rute mirip, segment effort, GPX, image card, atau video recap.</p>
             </article>
           </div>
         </div>
@@ -1044,7 +1066,7 @@
             </div>
             <p class="section-desc">
               Gaspool tidak menyembunyikan ketergantungan teknisnya. Beberapa layanan berjalan di server,
-              beberapa berjalan langsung di browser rider.
+              beberapa berjalan langsung di browser pengguna.
             </p>
           </div>
 
@@ -1062,12 +1084,12 @@
             <article class="card green">
               <span class="tag">Database</span>
               <h3>Cloudflare D1</h3>
-              <p>Database untuk user, ride metadata, statistik, planned route metadata, dan visibility activity.</p>
+              <p>Database untuk user, ride metadata, statistik, planned route metadata, personal segments, dan visibility activity.</p>
             </article>
             <article class="card">
               <span class="tag">Storage</span>
               <h3>Cloudflare R2</h3>
-              <p>Object storage untuk polyline route JSON, planned route JSON, dan audio radio peleton.</p>
+              <p>Object storage untuk polyline route JSON, planned route JSON, GPX-imported route data, dan audio radio peleton.</p>
             </article>
             <article class="card">
               <span class="tag">Realtime</span>
@@ -1086,8 +1108,8 @@
             </article>
             <article class="card blue">
               <span class="tag">Map</span>
-              <h3>OpenStreetMap + CARTO</h3>
-              <p>Data peta dan basemap gelap yang dirender sebagai kanvas map Gaspool.</p>
+              <h3>OpenStreetMap</h3>
+              <p>Data peta dan tile map terang yang dirender sebagai kanvas map Gaspool.</p>
             </article>
             <article class="card green">
               <span class="tag">Map Engine</span>
@@ -1117,7 +1139,7 @@
             <article class="card">
               <span class="tag">Browser APIs</span>
               <h3>Native Web Platform</h3>
-              <p>Geolocation, IndexedDB, Web Speech API, Wake Lock, MediaRecorder, Canvas, Blob, File, Clipboard, dan Web Share bila tersedia.</p>
+              <p>Geolocation, IndexedDB, Web Speech API, Wake Lock, MediaRecorder, DOMParser untuk GPX, Canvas, Blob, File, Clipboard, dan Web Share bila tersedia.</p>
             </article>
             <article class="card">
               <span class="tag">Tooling</span>
@@ -1194,6 +1216,7 @@
               <h3>Yang disimpan server</h3>
               <ul>
                 <li>Metadata aktivitas, statistik, dan route reference di D1.</li>
+                <li>Personal best dihitung dari aktivitas, sedangkan personal segments disimpan sebagai definisi segmen pribadi di D1.</li>
                 <li>Polyline route dan planned route JSON di R2.</li>
                 <li>Data radar/radio peleton sementara di KV.</li>
                 <li>Secret seperti ORS API key tetap berada di Worker secret.</li>
@@ -1206,6 +1229,7 @@
                 <li>Voice navigation memakai Web Speech API di browser.</li>
                 <li>Stealth mode mengurangi render visual tanpa mematikan pencatatan GPS.</li>
                 <li>Aktivitas default PRIVATE sampai kamu mengubahnya menjadi PUBLIC.</li>
+                <li>Rute mirip dan segment effort tampil untuk owner yang login, bukan untuk pengunjung public profile.</li>
               </ul>
             </div>
           </div>
@@ -1241,6 +1265,11 @@
               <h3>Apakah Gaspool bisa dipasang sendiri?</h3>
               <p>Ya. Gaspool dirancang untuk self-hosted deployment di Cloudflare Workers, D1, R2, KV, dan Turnstile.</p>
             </article>
+            <article class="card">
+              <span class="tag">Insight</span>
+              <h3>Apakah ada fitur seperti segment Strava?</h3>
+              <p>Ada versi personal: buat segment dari aktivitas sendiri, lalu Gaspool mencocokkan effort terbaik dari riwayat pribadi tanpa leaderboard global.</p>
+            </article>
           </div>
         </div>
       </section>
@@ -1252,7 +1281,7 @@
               <p class="section-kicker">Untuk Yang Suka Melalangbuana</p>
               <h2>Bangun tracker sendiri, tetap bisa gas jauh.</h2>
               <p>
-                Gaspool cocok untuk rider yang ingin data tetap di rumah sendiri,
+                Gaspool cocok untuk pengguna yang ingin data tetap di rumah sendiri,
                 tapi masih butuh route planner, panduan suara, radar peleton, dan hasil akhir yang layak dipamerkan.
               </p>
             </div>
@@ -1266,7 +1295,7 @@
         <div class="fineprint">
           <div style="color:#fff; font-weight:950; margin-bottom:8px;">🄯 2026 Jeannes Bryan</div>
           <strong>Gaspool</strong> adalah aplikasi DIY/self-hosted. Atribusi peta mengikuti OpenStreetMap contributors,
-          CARTO basemap, Leaflet, OpenRouteService, Open-Meteo, dan layanan Cloudflare yang dipakai pemilik instance.
+          Leaflet, OpenRouteService, Open-Meteo, dan layanan Cloudflare yang dipakai pemilik instance.
         </div>
         <a class="btn" href="#top">Kembali Atas</a>
       </div>
@@ -1276,13 +1305,13 @@
     const i18n = {
       en: {
         title: 'Gaspool - DIY Strava Alternative for Cycling, Running, Walking, and Hiking',
-        description: 'Gaspool is a self-hosted GPS activity tracker and DIY Strava alternative for cycling, running, walking, and hiking. Features include route planner, voice navigation, stealth mode, peleton radar, GPX export, heatmap, public profile, and flex image/video.',
+        description: 'Gaspool is a self-hosted GPS activity tracker and DIY Strava alternative for cycling, running, walking, and hiking. Features include route planner, voice navigation, stealth mode, peleton radar, GPX import/export, heatmap, personal best, matched activities, personal segments, public profile, and flex image/video.',
         ogTitle: 'Gaspool - DIY and Self-Hosted Strava Alternative',
-        ogDescription: 'GPS activity tracker for cycling, running, walking, and hiking with route planner, voice navigation, stealth mode, peleton radar, GPX export, heatmap, and flex image/video.',
+        ogDescription: 'GPS activity tracker for cycling, running, walking, and hiking with route planner, voice navigation, stealth mode, peleton radar, GPX import/export, heatmap, personal best, personal segments, and flex image/video.',
         twitterTitle: 'Gaspool - DIY Strava Alternative',
-        twitterDescription: 'Self-hosted GPS tracker with route planner, voice navigation, stealth mode, peleton radar, GPX export, heatmap, and flex image/video.',
+        twitterDescription: 'Self-hosted GPS tracker with route planner, voice navigation, stealth mode, peleton radar, GPX import/export, heatmap, personal best, personal segments, and flex image/video.',
         jsonDescription: 'Gaspool is a self-hosted GPS activity tracker and DIY Strava alternative.',
-        softwareDescription: 'Self-hosted GPS tracker for cycling, running, walking, and hiking with route planner, voice navigation, peleton radar, stealth mode, GPX export, heatmap, public profile, and flex image/video.',
+        softwareDescription: 'Self-hosted GPS tracker for cycling, running, walking, and hiking with route planner, voice navigation, peleton radar, stealth mode, GPX import/export, heatmap, personal best, matched activities, personal segments, public profile, and flex image/video.',
         text: {
           'Fitur': 'Features',
           'Alur': 'Flow',
@@ -1319,7 +1348,7 @@
           'Mode stealth meminimalkan render UI saat HP masuk kantong, tetap menjaga GPS, TTS, wake lock, dan blackbox session.': 'Stealth mode reduces UI rendering when the phone is in your pocket while keeping GPS, TTS, wake lock, and blackbox session alive.',
           'Peleton': 'Peleton',
           'Radar grup dan radio suara': 'Group radar and voice radio',
-          'Buat room peleton, bagikan link radar keluarga, sinkronkan posisi rider via KV, dan kirim voice radio antar peserta.': 'Create a peleton room, share family radar links, sync rider positions via KV, and send voice radio between participants.',
+          'Buat room peleton, bagikan link radar keluarga, sinkronkan posisi peserta via KV, dan kirim voice radio antar peserta.': 'Create a peleton room, share family radar links, sync participant positions via KV, and send voice radio between participants.',
           'Recovery': 'Recovery',
           'Blackbox anti sesi hilang': 'Blackbox against lost sessions',
           'Session resume memakai localStorage dan IndexedDB. Kalau tab mati, prompt resume menampilkan jarak, durasi, titik GPS, route, dan status privasi.': 'Session resume uses localStorage and IndexedDB. If the tab dies, the resume prompt shows distance, duration, GPS point count, route, and privacy status.',
@@ -1327,25 +1356,31 @@
           'Gambar dan video recap': 'Image and video recaps',
           'Ekspor kartu statistik, share map card, cinematic route recap video, dan peleton recap untuk pamer hasil gowes dengan gaya Gaspool.': 'Export stat cards, share map cards, cinematic route recap videos, and peleton recaps in Gaspool style.',
           'Library': 'Library',
-          'Route tersimpan dan heatmap': 'Saved routes and heatmap',
-          'Kelola rute tersimpan, rename atau hapus rute, buka ulang route planner, dan lihat heatmap dari riwayat aktivitas.': 'Manage saved routes, rename or delete routes, reopen the route planner, and view heatmaps from activity history.',
+          'Route library dan heatmap': 'Route library and heatmap',
+          'Kelola rute tersimpan, pin rute favorit, export route plan ke GPX, buka ulang route planner, dan lihat heatmap dari riwayat aktivitas.': 'Manage saved routes, pin favorite routes, export route plans to GPX, reopen the route planner, and view heatmaps from activity history.',
+          'Insight': 'Insight',
+          'Personal best dan rute mirip': 'Personal bests and similar routes',
+          'Lihat rekor pribadi, auto split per kilometer, dan bandingkan aktivitas dengan rute historis yang mirip tanpa leaderboard publik.': 'See personal records, auto kilometer splits, and compare activities with similar historical routes without public leaderboards.',
+          'Segments': 'Segments',
+          'Personal segments dari aktivitas sendiri': 'Personal segments from your own activities',
+          'Buat segmen dari potongan track, lalu Gaspool mencari effort terbaik dari riwayat aktivitas pribadi.': 'Create segments from track slices, then Gaspool finds your best efforts from your private activity history.',
           'Publik': 'Public',
           'Profil publik dengan kontrol privat': 'Public profile with privacy control',
-          'Aktivitas default private. Rider bisa memilih PUBLIC/PRIVATE, sementara profil publik hanya menampilkan aktivitas yang diset public.': 'Activities are private by default. Riders can choose PUBLIC/PRIVATE, while the public profile only shows public activities.',
+          'Aktivitas default private. Pengguna bisa memilih PUBLIC/PRIVATE, sementara profil publik hanya menampilkan aktivitas yang diset public.': 'Activities are private by default. Users can choose PUBLIC/PRIVATE, while the public profile only shows public activities.',
           'Flow Harian': 'Daily Flow',
           'Dari Rencana Sampai Flexing': 'From Planning To Flexing',
           'Gaspool dirancang untuk dipakai di jalan: sedikit lihat layar, lebih banyak dengar suara,\n              dan tetap punya data lengkap setelah selesai.': 'Gaspool is designed for real rides: look at the screen less, listen more, and still keep complete data after finishing.',
           'Buat atau pilih rute': 'Create or pick a route',
-          'Cari lokasi, tambah waypoint, generate rute, atau pakai rute yang sudah tersimpan.': 'Search a location, add waypoints, generate a route, or use a saved route.',
+          'Cari lokasi, tambah waypoint, generate rute, import GPX, pin rute favorit, atau pakai rute yang sudah tersimpan.': 'Search a location, add waypoints, generate a route, import GPX, pin a favorite route, or use a saved route.',
           'Mulai tracking': 'Start tracking',
           'Tracker memuat route overlay, GPS dot, recenter, tombol suara, stealth mode, dan privacy toggle.': 'The tracker loads route overlay, GPS dot, recenter, voice controls, stealth mode, and privacy toggle.',
           'Ikuti suara': 'Follow the voice',
           'TTS memberi arahan belokan. Kalau keluar jalur, Gaspool bisa memberi status off-route dan opsi reroute.': 'TTS gives turn guidance. If you leave the route, Gaspool can show off-route status and reroute options.',
           'Simpan dan pamer': 'Save and flex',
-          'Aktivitas masuk D1/R2, bisa public atau private, lalu diekspor sebagai GPX, image card, atau video recap.': 'Activities go to D1/R2, can be public or private, then exported as GPX, image cards, or video recaps.',
+          'Aktivitas masuk D1/R2, bisa public atau private, lalu dianalisis sebagai split, rute mirip, segment effort, GPX, image card, atau video recap.': 'Activities go to D1/R2, can be public or private, then analyzed as splits, similar routes, segment efforts, GPX, image cards, or video recaps.',
           'Transparansi dan Atribusi': 'Transparency and Attribution',
           'API dan Library Yang Dipakai': 'APIs and Libraries Used',
-          'Gaspool tidak menyembunyikan ketergantungan teknisnya. Beberapa layanan berjalan di server,\n              beberapa berjalan langsung di browser rider.': 'Gaspool does not hide its technical dependencies. Some services run on the server, while others run directly in the rider browser.',
+          'Gaspool tidak menyembunyikan ketergantungan teknisnya. Beberapa layanan berjalan di server,\n              beberapa berjalan langsung di browser pengguna.': 'Gaspool does not hide its technical dependencies. Some services run on the server, while others run directly in the user browser.',
           'Runtime': 'Runtime',
           'Framework': 'Framework',
           'Database': 'Database',
@@ -1366,17 +1401,17 @@
           'Hono': 'Hono',
           'Framework web TypeScript yang menangani route, API, auth, dashboard, tracker, dan public profile.': 'TypeScript web framework handling routes, API, auth, dashboard, tracker, and public profile.',
           'Cloudflare D1': 'Cloudflare D1',
-          'Database untuk user, ride metadata, statistik, planned route metadata, dan visibility activity.': 'Database for users, ride metadata, stats, planned route metadata, and activity visibility.',
+          'Database untuk user, ride metadata, statistik, planned route metadata, personal segments, dan visibility activity.': 'Database for users, ride metadata, stats, planned route metadata, personal segments, and activity visibility.',
           'Cloudflare R2': 'Cloudflare R2',
-          'Object storage untuk polyline route JSON, planned route JSON, dan audio radio peleton.': 'Object storage for route polyline JSON, planned route JSON, and peleton radio audio.',
+          'Object storage untuk polyline route JSON, planned route JSON, GPX-imported route data, dan audio radio peleton.': 'Object storage for route polyline JSON, planned route JSON, GPX-imported route data, and peleton radio audio.',
           'Cloudflare KV': 'Cloudflare KV',
           'Storage sementara untuk chunk upload, live radar peleton, dan metadata radio.': 'Temporary storage for upload chunks, live peleton radar, and radio metadata.',
           'Cloudflare Turnstile': 'Cloudflare Turnstile',
           'Proteksi anti-bot di flow autentikasi, dengan secret disimpan di Worker secret.': 'Anti-bot protection for authentication, with secrets stored in Worker secrets.',
           'OpenRouteService': 'OpenRouteService',
           'Directions V2 untuk generate rute dan geocoding search untuk mencari lokasi.': 'Directions V2 for route generation and geocoding search for finding locations.',
-          'OpenStreetMap + CARTO': 'OpenStreetMap + CARTO',
-          'Data peta dan basemap gelap yang dirender sebagai kanvas map Gaspool.': 'Map data and dark basemap rendered as the Gaspool map canvas.',
+          'OpenStreetMap': 'OpenStreetMap',
+          'Data peta dan tile map terang yang dirender sebagai kanvas map Gaspool.': 'Map data and light map tiles rendered as the Gaspool map canvas.',
           'Leaflet': 'Leaflet',
           'Library peta interaktif untuk dashboard, route planner, tracker, radar, heatmap, dan detail activity.': 'Interactive map library for dashboard, route planner, tracker, radar, heatmap, and activity detail.',
           'Open-Meteo': 'Open-Meteo',
@@ -1388,7 +1423,7 @@
           'bcryptjs': 'bcryptjs',
           'Hash password akun lokal sebelum disimpan.': 'Hashes local account passwords before storage.',
           'Native Web Platform': 'Native Web Platform',
-          'Geolocation, IndexedDB, Web Speech API, Wake Lock, MediaRecorder, Canvas, Blob, File, Clipboard, dan Web Share bila tersedia.': 'Geolocation, IndexedDB, Web Speech API, Wake Lock, MediaRecorder, Canvas, Blob, File, Clipboard, and Web Share when available.',
+          'Geolocation, IndexedDB, Web Speech API, Wake Lock, MediaRecorder, DOMParser untuk GPX, Canvas, Blob, File, Clipboard, dan Web Share bila tersedia.': 'Geolocation, IndexedDB, Web Speech API, Wake Lock, MediaRecorder, DOMParser for GPX, Canvas, Blob, File, Clipboard, and Web Share when available.',
           'TypeScript + Wrangler': 'TypeScript + Wrangler',
           'Tooling build, deploy, dan type generation untuk Cloudflare bindings.': 'Build, deploy, and type generation tooling for Cloudflare bindings.',
           'Jujur Soal Webapp': 'Honest About Web Apps',
@@ -1416,6 +1451,7 @@
           'Karena ini tracker lokasi, Gaspool memilih posisi konservatif: aktivitas baru private,\n              public profile hanya menampilkan yang memang kamu buka.': 'Because this is a location tracker, Gaspool takes a conservative stance: new activities are private, and the public profile only shows what you explicitly publish.',
           'Yang disimpan server': 'Stored on the server',
           'Metadata aktivitas, statistik, dan route reference di D1.': 'Activity metadata, stats, and route references in D1.',
+          'Personal best dihitung dari aktivitas, sedangkan personal segments disimpan sebagai definisi segmen pribadi di D1.': 'Personal bests are computed from activities, while personal segments are stored as private segment definitions in D1.',
           'Polyline route dan planned route JSON di R2.': 'Route polylines and planned route JSON in R2.',
           'Data radar/radio peleton sementara di KV.': 'Temporary peleton radar/radio data in KV.',
           'Secret seperti ORS API key tetap berada di Worker secret.': 'Secrets such as the ORS API key stay in Worker secrets.',
@@ -1424,6 +1460,7 @@
           'Voice navigation memakai Web Speech API di browser.': 'Voice navigation uses the browser Web Speech API.',
           'Stealth mode mengurangi render visual tanpa mematikan pencatatan GPS.': 'Stealth mode reduces visual rendering without stopping GPS recording.',
           'Aktivitas default PRIVATE sampai kamu mengubahnya menjadi PUBLIC.': 'Activities stay PRIVATE by default until you switch them to PUBLIC.',
+          'Rute mirip dan segment effort tampil untuk owner yang login, bukan untuk pengunjung public profile.': 'Similar routes and segment efforts are shown to the logged-in owner, not public profile visitors.',
           'Pertanyaan Cepat': 'Quick Questions',
           'Ringkasan singkat untuk pengunjung baru yang mencari alternatif Strava, GPS tracker mandiri,\n              atau aplikasi gowes self-hosted.': 'A quick summary for visitors looking for a Strava alternative, self-hosted GPS tracker, or cycling web app.',
           'Dasar': 'Basics',
@@ -1435,12 +1472,14 @@
           'Self-hosted': 'Self-hosted',
           'Apakah Gaspool bisa dipasang sendiri?': 'Can Gaspool be self-hosted?',
           'Ya. Gaspool dirancang untuk self-hosted deployment di Cloudflare Workers, D1, R2, KV, dan Turnstile.': 'Yes. Gaspool is designed for self-hosted deployment on Cloudflare Workers, D1, R2, KV, and Turnstile.',
+          'Apakah ada fitur seperti segment Strava?': 'Does Gaspool have Strava-like segments?',
+          'Ada versi personal: buat segment dari aktivitas sendiri, lalu Gaspool mencocokkan effort terbaik dari riwayat pribadi tanpa leaderboard global.': 'There is a personal version: create segments from your own activities, then Gaspool matches your best efforts from private history without a global leaderboard.',
           'Untuk Yang Suka Melalangbuana': 'For People Who Wander Far',
           'Bangun tracker sendiri, tetap bisa gas jauh.': 'Build your own tracker, still go far.',
-          'Gaspool cocok untuk rider yang ingin data tetap di rumah sendiri,\n                tapi masih butuh route planner, panduan suara, radar peleton, dan hasil akhir yang layak dipamerkan.': 'Gaspool is for riders who want to keep their data close, while still needing route planning, voice guidance, peleton radar, and results worth showing off.',
+          'Gaspool cocok untuk pengguna yang ingin data tetap di rumah sendiri,\n                tapi masih butuh route planner, panduan suara, radar peleton, dan hasil akhir yang layak dipamerkan.': 'Gaspool is for users who want to keep their data close, while still needing route planning, voice guidance, peleton radar, and results worth showing off.',
           '🄯 2026 Jeannes Bryan': '🄯 2026 Jeannes Bryan',
           'Gaspool': 'Gaspool',
-          'adalah aplikasi DIY/self-hosted. Atribusi peta mengikuti OpenStreetMap contributors,\n          CARTO basemap, Leaflet, OpenRouteService, Open-Meteo, dan layanan Cloudflare yang dipakai pemilik instance.': 'is a DIY/self-hosted app. Map attribution follows OpenStreetMap contributors, CARTO basemap, Leaflet, OpenRouteService, Open-Meteo, and the Cloudflare services used by the instance owner.',
+          'adalah aplikasi DIY/self-hosted. Atribusi peta mengikuti OpenStreetMap contributors,\n          Leaflet, OpenRouteService, Open-Meteo, dan layanan Cloudflare yang dipakai pemilik instance.': 'is a DIY/self-hosted app. Map attribution follows OpenStreetMap contributors, Leaflet, OpenRouteService, Open-Meteo, and the Cloudflare services used by the instance owner.',
           'Kembali Atas': 'Back To Top'
         }
       }
@@ -1492,6 +1531,10 @@
         faq.mainEntity[0].acceptedAnswer.text = 'Gaspool is a self-hosted GPS activity tracker and DIY Strava alternative for cycling, running, walking, and hiking.';
         faq.mainEntity[1].acceptedAnswer.text = 'Yes. Gaspool has a route planner with place search, OpenRouteService routing, route library, and voice navigation.';
         faq.mainEntity[2].acceptedAnswer.text = 'Yes. Gaspool is designed for self-hosted deployment on Cloudflare Workers, D1, R2, KV, and Turnstile.';
+        if (faq.mainEntity[3]) {
+          faq.mainEntity[3].name = 'Does Gaspool have personal segments?';
+          faq.mainEntity[3].acceptedAnswer.text = 'Yes. Gaspool has personal segments from your own activities and matches your best efforts from private history without global leaderboards.';
+        }
       }
 
       script.textContent = JSON.stringify(data, null, 2);
