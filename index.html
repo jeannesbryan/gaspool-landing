@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Gaspool - Alternatif Strava DIY untuk Gowes, Lari, Jalan, dan Mendaki</title>
-  <meta name="description" content="Gaspool adalah aplikasi GPS activity tracker self-hosted dan alternatif Strava versi DIY untuk gowes, lari, jalan, dan mendaki. Fitur: route planner, voice navigation, stealth mode, peleton radar, GPX import/export, heatmap, personal best, matched activities, personal segments, public profile, dan flex image/video.">
-  <meta name="keywords" content="Gaspool, alternatif Strava, Strava alternative, GPS tracker Indonesia, aplikasi gowes, cycling tracker, running tracker, hiking tracker, route planner, voice navigation, peleton radar, personal best, personal segments, self-hosted GPS tracker, Cloudflare Workers">
+  <title>Gaspool - Self-Hosted Endurance Tracker untuk Orang Yang Pergi Jauh</title>
+  <meta name="description" content="Gaspool adalah self-hosted endurance tracker untuk gowes, lari, jalan, mendaki, dan perjalanan jauh. Fitur: route planner, voice navigation, stealth mode, peleton radar, GPX import/export, heatmap, personal best, personal segments, reminder minum/makan, timezone-safe timing, public profile, dan flex image/video. Cocok sebagai alternatif Strava versi DIY.">
+  <meta name="keywords" content="Gaspool, endurance tracker, alternatif Strava, Strava alternative, GPS tracker Indonesia, aplikasi gowes, cycling tracker, running tracker, hiking tracker, route planner, voice navigation, peleton radar, water reminder, food reminder, personal best, personal segments, self-hosted GPS tracker, Cloudflare Workers">
   <meta name="author" content="Gaspool Project">
   <meta name="robots" content="index, follow, max-image-preview:large">
   <meta name="application-name" content="Gaspool">
@@ -18,15 +18,15 @@
   <meta property="og:site_name" content="Gaspool">
   <meta property="og:locale" content="id_ID">
   <meta property="og:url" content="https://gaspool.npc.my.id/">
-  <meta property="og:title" content="Gaspool - Alternatif Strava DIY dan Self-Hosted">
-  <meta property="og:description" content="GPS activity tracker untuk gowes, lari, jalan, dan mendaki dengan route planner, voice navigation, stealth mode, peleton radar, GPX import/export, heatmap, personal best, personal segments, dan flex image/video.">
+  <meta property="og:title" content="Gaspool - Self-Hosted Endurance Tracker">
+  <meta property="og:description" content="Tracker endurance untuk orang yang pergi jauh: route planner, voice navigation, stealth mode, peleton radar, GPX import/export, heatmap, personal best, reminder minum/makan, timezone-safe timing, dan flex image/video.">
   <meta property="og:image" content="https://gaspool.npc.my.id/assets/android-chrome-512x512.png">
   <meta property="og:image:alt" content="Logo icon Gaspool">
   <meta property="og:image:width" content="512">
   <meta property="og:image:height" content="512">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Gaspool - Alternatif Strava DIY">
-  <meta name="twitter:description" content="Self-hosted GPS tracker dengan route planner, voice navigation, stealth mode, peleton radar, GPX import/export, heatmap, personal best, personal segments, dan flex image/video.">
+  <meta name="twitter:title" content="Gaspool - Self-Hosted Endurance Tracker">
+  <meta name="twitter:description" content="Self-hosted endurance tracker dengan route planner, voice navigation, stealth mode, peleton radar, GPX import/export, personal best, reminder minum/makan, timezone-safe timing, dan flex image/video.">
   <meta name="twitter:image" content="https://gaspool.npc.my.id/assets/android-chrome-512x512.png">
   <link rel="icon" type="image/png" sizes="512x512" href="assets/android-chrome-512x512.png">
 
@@ -40,7 +40,7 @@
         "name": "Gaspool",
         "url": "https://gaspool.npc.my.id/",
         "inLanguage": "id-ID",
-        "description": "Gaspool adalah aplikasi GPS activity tracker self-hosted dan alternatif Strava versi DIY."
+        "description": "Gaspool adalah self-hosted endurance tracker untuk orang yang pergi jauh."
       },
       {
         "@type": "SoftwareApplication",
@@ -60,7 +60,7 @@
           "price": "0",
           "priceCurrency": "USD"
         },
-        "description": "Self-hosted GPS tracker untuk gowes, lari, jalan, dan mendaki dengan route planner, voice navigation, peleton radar, stealth mode, GPX import/export, heatmap, personal best, matched activities, personal segments, public profile, dan flex image/video.",
+        "description": "Self-hosted endurance tracker untuk gowes, lari, jalan, mendaki, dan perjalanan jauh dengan route planner, voice navigation, peleton radar, stealth mode, GPX import/export, heatmap, personal best, matched activities, personal segments, reminder minum/makan, timezone-safe timing, public profile, dan flex image/video.",
         "featureList": [
           "GPS activity tracking",
           "Route planner",
@@ -74,6 +74,10 @@
           "Personal best",
           "Matched activities",
           "Personal segments",
+          "Water and food reminders",
+          "Timezone-safe start and finish metadata",
+          "No-signal log",
+          "Offline route pack",
           "Public profile",
           "Flex image and video recap"
         ],
@@ -90,7 +94,7 @@
             "name": "Apa itu Gaspool?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "Gaspool adalah aplikasi GPS activity tracker self-hosted dan alternatif Strava versi DIY untuk gowes, lari, jalan, dan mendaki."
+              "text": "Gaspool adalah self-hosted endurance tracker untuk gowes, lari, jalan, mendaki, dan perjalanan jauh. Ia tetap cocok dicari sebagai alternatif Strava versi DIY, tapi fokus utamanya adalah tracking mandiri untuk aktivitas jauh."
             }
           },
           {
@@ -892,7 +896,7 @@
     <header class="hero" id="top">
       <div class="wrap hero-grid">
         <div>
-          <div class="eyebrow">DIY Strava Alternative - Cloudflare Native</div>
+          <div class="eyebrow">Self-Hosted Endurance Tracker - Cloudflare Native</div>
           <h1 aria-label="Gowes, Lari, Jalan, Mendaki. Gaspool.">
             <span class="verb-loop" aria-hidden="true">
               <span>Gowes.</span>
@@ -903,9 +907,9 @@
             <span class="brand-word">Gaspool.</span>
           </h1>
           <p class="lead">
-            Gaspool adalah tracker aktivitas mandiri untuk gowes, lari, jalan, dan mendaki:
-            rekam GPS, bikin rute, dengar panduan suara, pantau peleton, lalu flex hasilnya
-            sebagai gambar atau video tanpa bergantung pada aplikasi kebugaran tertutup.
+            Gaspool adalah tracker endurance mandiri untuk orang yang pergi jauh:
+            rekam GPS, bikin rute, dengar panduan suara, pantau peleton, bertahan saat sinyal jelek,
+            lalu flex hasilnya sebagai gambar atau video tanpa bergantung pada aplikasi kebugaran tertutup.
           </p>
           <div class="hero-points">
             <div class="point">
@@ -929,7 +933,7 @@
             <div class="hero-logo-panel">
               <img class="hero-logo" src="assets/gaspool.png" alt="Logo Gaspool">
             </div>
-            <div class="brand-caption">Route planner, tracker, navigator</div>
+            <div class="brand-caption">Endurance tracker, route planner, navigator</div>
           </div>
           <div class="mini-metrics" aria-label="Highlight Gaspool">
             <div class="mini-metric">
@@ -979,6 +983,11 @@
               <h3>Voice navigation untuk stealth mode</h3>
               <p>Panduan suara dari Web Speech API, prompt belokan, ulangi instruksi, deteksi off-route, dan reroute ke tujuan yang sama.</p>
             </article>
+            <article class="card green">
+              <span class="tag">Asupan</span>
+              <h3>Reminder minum dan makan</h3>
+              <p>Prompt TTS berbasis moving time dan jarak untuk minum serta makan kecil saat aktivitas panjang, dengan interval adaptif untuk gowes, lari, jalan, dan hiking.</p>
+            </article>
             <article class="card">
               <span class="tag">Stealth</span>
               <h3>Layar gelap, hemat visual</h3>
@@ -993,6 +1002,11 @@
               <span class="tag">Recovery</span>
               <h3>Blackbox anti sesi hilang</h3>
               <p>Session resume memakai localStorage dan IndexedDB. Kalau tab mati, prompt resume menampilkan jarak, durasi, titik GPS, route, dan status privasi.</p>
+            </article>
+            <article class="card">
+              <span class="tag">Ekspedisi</span>
+              <h3>Aman untuk lintas hari dan zona waktu</h3>
+              <p>Aktivitas menyimpan waktu start, finish, dan konteks timezone dari perangkat, sehingga perjalanan panjang tidak tercatat sebagai tanggal upload saja.</p>
             </article>
             <article class="card">
               <span class="tag">Flex</span>
@@ -1179,6 +1193,11 @@
               <h3>TTS tergantung device</h3>
               <p>Panduan suara memakai Web Speech API bawaan browser. Gaspool memilih suara Indonesia jika tersedia, tapi kualitas dan pilihan voice tetap mengikuti perangkat user.</p>
             </article>
+            <article class="card green">
+              <span class="tag">Nutrisi personal</span>
+              <h3>Reminder bukan saran medis</h3>
+              <p>Kebutuhan air dan makanan bergantung cuaca, intensitas, tubuh, dan medan. Gaspool hanya memberi prompt agar tidak lupa asupan saat aktivitas panjang.</p>
+            </article>
             <article class="card">
               <span class="tag">Akurasi</span>
               <h3>GPS mengikuti kondisi HP</h3>
@@ -1188,6 +1207,11 @@
               <span class="tag">iOS/Safari</span>
               <h3>Perilaku browser bisa berbeda</h3>
               <p>iOS dan Safari cenderung lebih ketat soal background task, audio, dan wake lock. Untuk pengalaman paling stabil, Gaspool lebih direkomendasikan di Android Chrome/PWA.</p>
+            </article>
+            <article class="card">
+              <span class="tag">Zona waktu</span>
+              <h3>Label mengikuti device</h3>
+              <p>Timestamp utama disimpan sebagai UTC, tapi nama zona waktu mengikuti setting perangkat. Aktifkan automatic timezone saat melintasi wilayah seperti WITA ke WIB.</p>
             </article>
             <article class="card">
               <span class="tag">Recovery</span>
@@ -1244,8 +1268,8 @@
               <h2>Pertanyaan Cepat</h2>
             </div>
             <p class="section-desc">
-              Ringkasan singkat untuk pengunjung baru yang mencari alternatif Strava, GPS tracker mandiri,
-              atau aplikasi gowes self-hosted.
+              Ringkasan singkat untuk pengunjung baru yang mencari endurance tracker mandiri,
+              aplikasi gowes self-hosted, atau alternatif Strava versi DIY.
             </p>
           </div>
 
@@ -1253,7 +1277,7 @@
             <article class="card orange">
               <span class="tag">Dasar</span>
               <h3>Apa itu Gaspool?</h3>
-              <p>Gaspool adalah aplikasi GPS activity tracker self-hosted dan alternatif Strava versi DIY untuk gowes, lari, jalan, dan mendaki.</p>
+              <p>Gaspool adalah self-hosted endurance tracker untuk gowes, lari, jalan, mendaki, dan perjalanan jauh. Ia tetap bisa dipakai sebagai alternatif Strava versi DIY, tapi fokusnya adalah tracking mandiri untuk aktivitas panjang.</p>
             </article>
             <article class="card blue">
               <span class="tag">Rute</span>
@@ -1279,10 +1303,11 @@
           <div class="cta">
             <div>
               <p class="section-kicker">Untuk Yang Suka Melalangbuana</p>
-              <h2>Bangun tracker sendiri, tetap bisa gas jauh.</h2>
+              <h2>Bangun tracker endurance sendiri, tetap bisa gas jauh.</h2>
               <p>
                 Gaspool cocok untuk pengguna yang ingin data tetap di rumah sendiri,
-                tapi masih butuh route planner, panduan suara, radar peleton, dan hasil akhir yang layak dipamerkan.
+                tapi masih butuh route planner, panduan suara, radar peleton, mitigasi sinyal hilang,
+                dan hasil akhir yang layak dipamerkan.
               </p>
             </div>
           </div>
@@ -1304,14 +1329,14 @@
   <script>
     const i18n = {
       en: {
-        title: 'Gaspool - DIY Strava Alternative for Cycling, Running, Walking, and Hiking',
-        description: 'Gaspool is a self-hosted GPS activity tracker and DIY Strava alternative for cycling, running, walking, and hiking. Features include route planner, voice navigation, stealth mode, peleton radar, GPX import/export, heatmap, personal best, matched activities, personal segments, public profile, and flex image/video.',
-        ogTitle: 'Gaspool - DIY and Self-Hosted Strava Alternative',
-        ogDescription: 'GPS activity tracker for cycling, running, walking, and hiking with route planner, voice navigation, stealth mode, peleton radar, GPX import/export, heatmap, personal best, personal segments, and flex image/video.',
-        twitterTitle: 'Gaspool - DIY Strava Alternative',
-        twitterDescription: 'Self-hosted GPS tracker with route planner, voice navigation, stealth mode, peleton radar, GPX import/export, heatmap, personal best, personal segments, and flex image/video.',
-        jsonDescription: 'Gaspool is a self-hosted GPS activity tracker and DIY Strava alternative.',
-        softwareDescription: 'Self-hosted GPS tracker for cycling, running, walking, and hiking with route planner, voice navigation, peleton radar, stealth mode, GPX import/export, heatmap, personal best, matched activities, personal segments, public profile, and flex image/video.',
+        title: 'Gaspool - Self-Hosted Endurance Tracker for People Who Go Far',
+        description: 'Gaspool is a self-hosted endurance tracker for cycling, running, walking, hiking, and long-distance adventures. Features include route planner, voice navigation, stealth mode, peleton radar, GPX import/export, heatmap, personal best, matched activities, personal segments, water and food reminders, timezone-safe timing, public profile, and flex image/video. It also works as a DIY Strava alternative.',
+        ogTitle: 'Gaspool - Self-Hosted Endurance Tracker',
+        ogDescription: 'Endurance tracker for people who go far: route planner, voice navigation, stealth mode, peleton radar, GPX import/export, heatmap, personal best, water and food reminders, timezone-safe timing, and flex image/video.',
+        twitterTitle: 'Gaspool - Self-Hosted Endurance Tracker',
+        twitterDescription: 'Self-hosted endurance tracker with route planner, voice navigation, stealth mode, peleton radar, GPX import/export, personal best, water and food reminders, timezone-safe timing, and flex image/video.',
+        jsonDescription: 'Gaspool is a self-hosted endurance tracker for people who go far.',
+        softwareDescription: 'Self-hosted endurance tracker for cycling, running, walking, hiking, and long-distance adventures with route planner, voice navigation, peleton radar, stealth mode, GPX import/export, heatmap, personal best, matched activities, personal segments, water and food reminders, timezone-safe timing, public profile, and flex image/video.',
         text: {
           'Fitur': 'Features',
           'Alur': 'Flow',
@@ -1322,12 +1347,12 @@
           'Lari.': 'Run.',
           'Jalan.': 'Walk.',
           'Mendaki.': 'Hike.',
-          'DIY Strava Alternative - Cloudflare Native': 'DIY Strava Alternative - Cloudflare Native',
-          'Gaspool adalah tracker aktivitas mandiri untuk gowes, lari, jalan, dan mendaki:\n            rekam GPS, bikin rute, dengar panduan suara, pantau peleton, lalu flex hasilnya\n            sebagai gambar atau video tanpa bergantung pada aplikasi kebugaran tertutup.': 'Gaspool is a self-hosted activity tracker for cycling, running, walking, and hiking: record GPS, plan routes, listen to voice guidance, monitor your peleton, and turn the result into flex-worthy images or videos without depending on closed fitness apps.',
+          'Self-Hosted Endurance Tracker - Cloudflare Native': 'Self-Hosted Endurance Tracker - Cloudflare Native',
+          'Gaspool adalah tracker endurance mandiri untuk orang yang pergi jauh:\n            rekam GPS, bikin rute, dengar panduan suara, pantau peleton, bertahan saat sinyal jelek,\n            lalu flex hasilnya sebagai gambar atau video tanpa bergantung pada aplikasi kebugaran tertutup.': 'Gaspool is a self-hosted endurance tracker for people who go far: record GPS, plan routes, listen to voice guidance, monitor your peleton, stay resilient through bad signal, and turn the result into flex-worthy images or videos without depending on closed fitness apps.',
           'recording, GPX, heatmap': 'recording, GPX, heatmap',
           'voice navigation lokal': 'local voice navigation',
           'self-hosted di Cloudflare': 'self-hosted on Cloudflare',
-          'Route planner, tracker, navigator': 'Route planner, tracker, navigator',
+          'Endurance tracker, route planner, navigator': 'Endurance tracker, route planner, navigator',
           'routing': 'routing',
           'voice nav': 'voice nav',
           'route store': 'route store',
@@ -1343,6 +1368,9 @@
           'Navigator': 'Navigator',
           'Voice navigation untuk stealth mode': 'Voice navigation for stealth mode',
           'Panduan suara dari Web Speech API, prompt belokan, ulangi instruksi, deteksi off-route, dan reroute ke tujuan yang sama.': 'Voice guidance via Web Speech API, turn prompts, repeat instruction, off-route detection, and reroute to the same destination.',
+          'Asupan': 'Fueling',
+          'Reminder minum dan makan': 'Water and food reminders',
+          'Prompt TTS berbasis moving time dan jarak untuk minum serta makan kecil saat aktivitas panjang, dengan interval adaptif untuk gowes, lari, jalan, dan hiking.': 'TTS prompts based on moving time and distance for water and small food breaks during long activities, with adaptive intervals for cycling, running, walking, and hiking.',
           'Stealth': 'Stealth',
           'Layar gelap, hemat visual': 'Dark screen, lighter visual rendering',
           'Mode stealth meminimalkan render UI saat HP masuk kantong, tetap menjaga GPS, TTS, wake lock, dan blackbox session.': 'Stealth mode reduces UI rendering when the phone is in your pocket while keeping GPS, TTS, wake lock, and blackbox session alive.',
@@ -1352,6 +1380,9 @@
           'Recovery': 'Recovery',
           'Blackbox anti sesi hilang': 'Blackbox against lost sessions',
           'Session resume memakai localStorage dan IndexedDB. Kalau tab mati, prompt resume menampilkan jarak, durasi, titik GPS, route, dan status privasi.': 'Session resume uses localStorage and IndexedDB. If the tab dies, the resume prompt shows distance, duration, GPS point count, route, and privacy status.',
+          'Ekspedisi': 'Expedition',
+          'Aman untuk lintas hari dan zona waktu': 'Safe for multi-day and timezone-crossing trips',
+          'Aktivitas menyimpan waktu start, finish, dan konteks timezone dari perangkat, sehingga perjalanan panjang tidak tercatat sebagai tanggal upload saja.': 'Activities store start time, finish time, and device timezone context, so long trips are not recorded only as the upload date.',
           'Flex': 'Flex',
           'Gambar dan video recap': 'Image and video recaps',
           'Ekspor kartu statistik, share map card, cinematic route recap video, dan peleton recap untuk pamer hasil gowes dengan gaya Gaspool.': 'Export stat cards, share map cards, cinematic route recap videos, and peleton recaps in Gaspool style.',
@@ -1438,12 +1469,18 @@
           'Suara': 'Voice',
           'TTS tergantung device': 'TTS depends on the device',
           'Panduan suara memakai Web Speech API bawaan browser. Gaspool memilih suara Indonesia jika tersedia, tapi kualitas dan pilihan voice tetap mengikuti perangkat user.': 'Voice guidance uses the browser Web Speech API. Gaspool selects Indonesian voices when available, but voice quality and options still depend on the user device.',
+          'Nutrisi personal': 'Personal nutrition',
+          'Reminder bukan saran medis': 'Reminders are not medical advice',
+          'Kebutuhan air dan makanan bergantung cuaca, intensitas, tubuh, dan medan. Gaspool hanya memberi prompt agar tidak lupa asupan saat aktivitas panjang.': 'Water and food needs depend on weather, intensity, body, and terrain. Gaspool only gives prompts so users do not forget fueling during long activities.',
           'Akurasi': 'Accuracy',
           'GPS mengikuti kondisi HP': 'GPS follows phone conditions',
           'Cuaca, gedung, posisi HP di tas, dan battery saver bisa membuat track loncat. Pakai HTTPS, izinkan lokasi, matikan optimasi baterai ekstrem, dan aktifkan stealth mode saat butuh hemat daya.': 'Weather, buildings, phone position inside a bag, and battery saver can cause GPS jumps. Use HTTPS, allow location, disable aggressive battery optimization, and enable stealth mode when saving power matters.',
           'iOS/Safari': 'iOS/Safari',
           'Perilaku browser bisa berbeda': 'Browser behavior can differ',
           'iOS dan Safari cenderung lebih ketat soal background task, audio, dan wake lock. Untuk pengalaman paling stabil, Gaspool lebih direkomendasikan di Android Chrome/PWA.': 'iOS and Safari tend to be stricter with background tasks, audio, and wake lock. For the most stable experience, Gaspool is recommended on Android Chrome/PWA.',
+          'Zona waktu': 'Timezone',
+          'Label mengikuti device': 'Labels follow the device',
+          'Timestamp utama disimpan sebagai UTC, tapi nama zona waktu mengikuti setting perangkat. Aktifkan automatic timezone saat melintasi wilayah seperti WITA ke WIB.': 'Core timestamps are stored as UTC, but timezone names follow the device setting. Enable automatic timezone when crossing regions such as WITA to WIB.',
           'Gagal upload bukan akhir cerita': 'Failed uploads are not the end',
           'Gaspool memakai IndexedDB blackbox, resume prompt, dan upload bertahap agar sesi lebih tahan banting. Tetap cek hasil setelah finish sebelum menutup browser sepenuhnya.': 'Gaspool uses IndexedDB blackbox, resume prompts, and staged uploads to make sessions more resilient. Still check your result after finishing before fully closing the browser.',
           'Privasi dan Kendali': 'Privacy and Control',
@@ -1462,10 +1499,10 @@
           'Aktivitas default PRIVATE sampai kamu mengubahnya menjadi PUBLIC.': 'Activities stay PRIVATE by default until you switch them to PUBLIC.',
           'Rute mirip dan segment effort tampil untuk owner yang login, bukan untuk pengunjung public profile.': 'Similar routes and segment efforts are shown to the logged-in owner, not public profile visitors.',
           'Pertanyaan Cepat': 'Quick Questions',
-          'Ringkasan singkat untuk pengunjung baru yang mencari alternatif Strava, GPS tracker mandiri,\n              atau aplikasi gowes self-hosted.': 'A quick summary for visitors looking for a Strava alternative, self-hosted GPS tracker, or cycling web app.',
+          'Ringkasan singkat untuk pengunjung baru yang mencari endurance tracker mandiri,\n              aplikasi gowes self-hosted, atau alternatif Strava versi DIY.': 'A quick summary for visitors looking for a self-hosted endurance tracker, cycling web app, or DIY Strava alternative.',
           'Dasar': 'Basics',
           'Apa itu Gaspool?': 'What is Gaspool?',
-          'Gaspool adalah aplikasi GPS activity tracker self-hosted dan alternatif Strava versi DIY untuk gowes, lari, jalan, dan mendaki.': 'Gaspool is a self-hosted GPS activity tracker and DIY Strava alternative for cycling, running, walking, and hiking.',
+          'Gaspool adalah self-hosted endurance tracker untuk gowes, lari, jalan, mendaki, dan perjalanan jauh. Ia tetap bisa dipakai sebagai alternatif Strava versi DIY, tapi fokusnya adalah tracking mandiri untuk aktivitas panjang.': 'Gaspool is a self-hosted endurance tracker for cycling, running, walking, hiking, and long-distance adventures. It still works as a DIY Strava alternative, but its main focus is independent tracking for long activities.',
           'Rute': 'Routes',
           'Apakah Gaspool bisa membuat rute?': 'Can Gaspool create routes?',
           'Ya. Gaspool memiliki route planner dengan pencarian lokasi, OpenRouteService routing, route library, dan voice navigation.': 'Yes. Gaspool has a route planner with place search, OpenRouteService routing, route library, and voice navigation.',
@@ -1475,8 +1512,8 @@
           'Apakah ada fitur seperti segment Strava?': 'Does Gaspool have Strava-like segments?',
           'Ada versi personal: buat segment dari aktivitas sendiri, lalu Gaspool mencocokkan effort terbaik dari riwayat pribadi tanpa leaderboard global.': 'There is a personal version: create segments from your own activities, then Gaspool matches your best efforts from private history without a global leaderboard.',
           'Untuk Yang Suka Melalangbuana': 'For People Who Wander Far',
-          'Bangun tracker sendiri, tetap bisa gas jauh.': 'Build your own tracker, still go far.',
-          'Gaspool cocok untuk pengguna yang ingin data tetap di rumah sendiri,\n                tapi masih butuh route planner, panduan suara, radar peleton, dan hasil akhir yang layak dipamerkan.': 'Gaspool is for users who want to keep their data close, while still needing route planning, voice guidance, peleton radar, and results worth showing off.',
+          'Bangun tracker endurance sendiri, tetap bisa gas jauh.': 'Build your own endurance tracker, still go far.',
+          'Gaspool cocok untuk pengguna yang ingin data tetap di rumah sendiri,\n                tapi masih butuh route planner, panduan suara, radar peleton, mitigasi sinyal hilang,\n                dan hasil akhir yang layak dipamerkan.': 'Gaspool is for users who want to keep their data close, while still needing route planning, voice guidance, peleton radar, bad-signal mitigation, and results worth showing off.',
           '🄯 2026 Jeannes Bryan': '🄯 2026 Jeannes Bryan',
           'Gaspool': 'Gaspool',
           'adalah aplikasi DIY/self-hosted. Atribusi peta mengikuti OpenStreetMap contributors,\n          Leaflet, OpenRouteService, Open-Meteo, dan layanan Cloudflare yang dipakai pemilik instance.': 'is a DIY/self-hosted app. Map attribution follows OpenStreetMap contributors, Leaflet, OpenRouteService, Open-Meteo, and the Cloudflare services used by the instance owner.',
@@ -1528,7 +1565,7 @@
 
         site.description = i18n.en.jsonDescription;
         app.description = i18n.en.softwareDescription;
-        faq.mainEntity[0].acceptedAnswer.text = 'Gaspool is a self-hosted GPS activity tracker and DIY Strava alternative for cycling, running, walking, and hiking.';
+        faq.mainEntity[0].acceptedAnswer.text = 'Gaspool is a self-hosted endurance tracker for cycling, running, walking, hiking, and long-distance adventures. It still works as a DIY Strava alternative, but its main focus is independent tracking for long activities.';
         faq.mainEntity[1].acceptedAnswer.text = 'Yes. Gaspool has a route planner with place search, OpenRouteService routing, route library, and voice navigation.';
         faq.mainEntity[2].acceptedAnswer.text = 'Yes. Gaspool is designed for self-hosted deployment on Cloudflare Workers, D1, R2, KV, and Turnstile.';
         if (faq.mainEntity[3]) {
