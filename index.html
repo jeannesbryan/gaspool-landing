@@ -76,6 +76,9 @@
           "Personal segments",
           "Water and food reminders",
           "Timezone-safe start and finish metadata",
+          "Rest block detection",
+          "Pause overnight mode",
+          "Dashboard calendar view",
           "No-signal log",
           "Offline route pack",
           "Public profile",
@@ -1009,6 +1012,16 @@
               <p>Aktivitas menyimpan waktu start, finish, dan konteks timezone dari perangkat, sehingga perjalanan panjang tidak tercatat sebagai tanggal upload saja.</p>
             </article>
             <article class="card">
+              <span class="tag">Recovery</span>
+              <h3>Rest block dan lanjut besok</h3>
+              <p>Jeda panjang, auto-pause, system gap, dan pause overnight bisa dicatat sebagai rest block agar statistik perjalanan tetap waras.</p>
+            </article>
+            <article class="card">
+              <span class="tag">Kalender</span>
+              <h3>Calendar view aktivitas</h3>
+              <p>Lihat konsistensi aktivitas dalam kalender bulanan, lengkap dengan jumlah sesi dan total kilometer per tanggal.</p>
+            </article>
+            <article class="card">
               <span class="tag">Flex</span>
               <h3>Gambar dan video recap</h3>
               <p>Ekspor kartu statistik, share map card, cinematic route recap video, dan peleton recap untuk pamer hasil gowes dengan gaya Gaspool.</p>
@@ -1330,13 +1343,13 @@
     const i18n = {
       en: {
         title: 'Gaspool - Self-Hosted Endurance Tracker for People Who Go Far',
-        description: 'Gaspool is a self-hosted endurance tracker for cycling, running, walking, hiking, and long-distance adventures. Features include route planner, voice navigation, stealth mode, peleton radar, GPX import/export, heatmap, personal best, matched activities, personal segments, water and food reminders, timezone-safe timing, public profile, and flex image/video. It also works as a DIY Strava alternative.',
+        description: 'Gaspool is a self-hosted endurance tracker for cycling, running, walking, hiking, and long-distance adventures. Features include route planner, voice navigation, stealth mode, peleton radar, GPX import/export, heatmap, personal best, matched activities, personal segments, water and food reminders, rest blocks, calendar view, timezone-safe timing, public profile, and flex image/video. It also works as a DIY Strava alternative.',
         ogTitle: 'Gaspool - Self-Hosted Endurance Tracker',
         ogDescription: 'Endurance tracker for people who go far: route planner, voice navigation, stealth mode, peleton radar, GPX import/export, heatmap, personal best, water and food reminders, timezone-safe timing, and flex image/video.',
         twitterTitle: 'Gaspool - Self-Hosted Endurance Tracker',
         twitterDescription: 'Self-hosted endurance tracker with route planner, voice navigation, stealth mode, peleton radar, GPX import/export, personal best, water and food reminders, timezone-safe timing, and flex image/video.',
         jsonDescription: 'Gaspool is a self-hosted endurance tracker for people who go far.',
-        softwareDescription: 'Self-hosted endurance tracker for cycling, running, walking, hiking, and long-distance adventures with route planner, voice navigation, peleton radar, stealth mode, GPX import/export, heatmap, personal best, matched activities, personal segments, water and food reminders, timezone-safe timing, public profile, and flex image/video.',
+        softwareDescription: 'Self-hosted endurance tracker for cycling, running, walking, hiking, and long-distance adventures with route planner, voice navigation, peleton radar, stealth mode, GPX import/export, heatmap, personal best, matched activities, personal segments, water and food reminders, rest blocks, calendar view, timezone-safe timing, public profile, and flex image/video.',
         text: {
           'Fitur': 'Features',
           'Alur': 'Flow',
@@ -1383,6 +1396,11 @@
           'Ekspedisi': 'Expedition',
           'Aman untuk lintas hari dan zona waktu': 'Safe for multi-day and timezone-crossing trips',
           'Aktivitas menyimpan waktu start, finish, dan konteks timezone dari perangkat, sehingga perjalanan panjang tidak tercatat sebagai tanggal upload saja.': 'Activities store start time, finish time, and device timezone context, so long trips are not recorded only as the upload date.',
+          'Rest block dan lanjut besok': 'Rest blocks and finish later',
+          'Jeda panjang, auto-pause, system gap, dan pause overnight bisa dicatat sebagai rest block agar statistik perjalanan tetap waras.': 'Long stops, auto-pause, system gaps, and pause overnight can be recorded as rest blocks so activity stats stay sane.',
+          'Kalender': 'Calendar',
+          'Calendar view aktivitas': 'Activity calendar view',
+          'Lihat konsistensi aktivitas dalam kalender bulanan, lengkap dengan jumlah sesi dan total kilometer per tanggal.': 'See activity consistency in a monthly calendar, with session count and total kilometers per date.',
           'Flex': 'Flex',
           'Gambar dan video recap': 'Image and video recaps',
           'Ekspor kartu statistik, share map card, cinematic route recap video, dan peleton recap untuk pamer hasil gowes dengan gaya Gaspool.': 'Export stat cards, share map cards, cinematic route recap videos, and peleton recaps in Gaspool style.',
