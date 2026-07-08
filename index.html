@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Gaspool - Self-Hosted Endurance Tracker untuk Orang Yang Pergi Jauh</title>
-  <meta name="description" content="Gaspool adalah self-hosted endurance tracker untuk gowes, lari, jalan, mendaki, dan perjalanan jauh. Fitur: route planner, voice navigation, stealth mode, peleton radar, GPX import/export, heatmap, personal best, personal segments, reminder minum/makan, timezone-safe timing, public profile, dan flex image/video. Cocok sebagai alternatif Strava versi DIY.">
+  <meta name="description" content="Gaspool adalah self-hosted endurance tracker untuk gowes, lari, jalan, mendaki, dan perjalanan jauh. Fitur: route planner, voice navigation, stealth mode, peleton radar, GPX import/export, heatmap, personal best, personal segments, reminder minum/makan, timezone-safe timing, Activity Doctor, Finish Review, public profile, dan flex image/video. Cocok sebagai alternatif Strava versi DIY.">
   <meta name="keywords" content="Gaspool, endurance tracker, alternatif Strava, Strava alternative, GPS tracker Indonesia, aplikasi gowes, cycling tracker, running tracker, hiking tracker, route planner, voice navigation, peleton radar, water reminder, food reminder, personal best, personal segments, self-hosted GPS tracker, Cloudflare Workers">
   <meta name="author" content="Gaspool Project">
   <meta name="robots" content="index, follow, max-image-preview:large">
@@ -19,14 +19,14 @@
   <meta property="og:locale" content="id_ID">
   <meta property="og:url" content="https://gaspool.npc.my.id/">
   <meta property="og:title" content="Gaspool - Self-Hosted Endurance Tracker">
-  <meta property="og:description" content="Tracker endurance untuk orang yang pergi jauh: route planner, voice navigation, stealth mode, peleton radar, GPX import/export, heatmap, personal best, reminder minum/makan, timezone-safe timing, dan flex image/video.">
+  <meta property="og:description" content="Tracker endurance untuk orang yang pergi jauh: route planner, voice navigation, stealth mode, peleton radar, GPX import/export, heatmap, personal best, reminder minum/makan, timezone-safe timing, Activity Doctor, Finish Review, dan flex image/video.">
   <meta property="og:image" content="https://gaspool.npc.my.id/assets/android-chrome-512x512.png">
   <meta property="og:image:alt" content="Logo icon Gaspool">
   <meta property="og:image:width" content="512">
   <meta property="og:image:height" content="512">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Gaspool - Self-Hosted Endurance Tracker">
-  <meta name="twitter:description" content="Self-hosted endurance tracker dengan route planner, voice navigation, stealth mode, peleton radar, GPX import/export, personal best, reminder minum/makan, timezone-safe timing, dan flex image/video.">
+  <meta name="twitter:description" content="Self-hosted endurance tracker dengan route planner, voice navigation, stealth mode, peleton radar, GPX import/export, personal best, reminder minum/makan, timezone-safe timing, Activity Doctor, Finish Review, dan flex image/video.">
   <meta name="twitter:image" content="https://gaspool.npc.my.id/assets/android-chrome-512x512.png">
   <link rel="icon" type="image/png" sizes="512x512" href="assets/android-chrome-512x512.png">
 
@@ -60,7 +60,7 @@
           "price": "0",
           "priceCurrency": "USD"
         },
-        "description": "Self-hosted endurance tracker untuk gowes, lari, jalan, mendaki, dan perjalanan jauh dengan route planner, voice navigation, peleton radar, stealth mode, GPX import/export, heatmap, personal best, matched activities, personal segments, reminder minum/makan, timezone-safe timing, public profile, dan flex image/video.",
+        "description": "Self-hosted endurance tracker untuk gowes, lari, jalan, mendaki, dan perjalanan jauh dengan route planner, voice navigation, peleton radar, stealth mode, GPX import/export, heatmap, personal best, matched activities, personal segments, reminder minum/makan, timezone-safe timing, Activity Doctor, Finish Review, public profile, dan flex image/video.",
         "featureList": [
           "GPS activity tracking",
           "Route planner",
@@ -79,6 +79,8 @@
           "Rest block detection",
           "Pause overnight mode",
           "Dashboard calendar view",
+          "Activity Doctor auto repair",
+          "Finish Review screen",
           "No-signal log",
           "Offline route pack",
           "Public profile",
@@ -1021,6 +1023,11 @@
               <h3>Calendar view aktivitas</h3>
               <p>Lihat konsistensi aktivitas dalam kalender bulanan, lengkap dengan jumlah sesi dan total kilometer per tanggal.</p>
             </article>
+            <article class="card blue">
+              <span class="tag">Doctor</span>
+              <h3>Finish Review dan Activity Doctor</h3>
+              <p>Scan data sebelum save, cek aktivitas lama, buat backup R2, lalu auto-repair aman untuk route JSON, GPS point, rest gap, metadata, dan statistik D1.</p>
+            </article>
             <article class="card">
               <span class="tag">Flex</span>
               <h3>Gambar dan video recap</h3>
@@ -1343,13 +1350,13 @@
     const i18n = {
       en: {
         title: 'Gaspool - Self-Hosted Endurance Tracker for People Who Go Far',
-        description: 'Gaspool is a self-hosted endurance tracker for cycling, running, walking, hiking, and long-distance adventures. Features include route planner, voice navigation, stealth mode, peleton radar, GPX import/export, heatmap, personal best, matched activities, personal segments, water and food reminders, rest blocks, calendar view, timezone-safe timing, public profile, and flex image/video. It also works as a DIY Strava alternative.',
+        description: 'Gaspool is a self-hosted endurance tracker for cycling, running, walking, hiking, and long-distance adventures. Features include route planner, voice navigation, stealth mode, peleton radar, GPX import/export, heatmap, personal best, matched activities, personal segments, water and food reminders, rest blocks, calendar view, timezone-safe timing, Activity Doctor, Finish Review, public profile, and flex image/video. It also works as a DIY Strava alternative.',
         ogTitle: 'Gaspool - Self-Hosted Endurance Tracker',
-        ogDescription: 'Endurance tracker for people who go far: route planner, voice navigation, stealth mode, peleton radar, GPX import/export, heatmap, personal best, water and food reminders, timezone-safe timing, and flex image/video.',
+        ogDescription: 'Endurance tracker for people who go far: route planner, voice navigation, stealth mode, peleton radar, GPX import/export, heatmap, personal best, water and food reminders, timezone-safe timing, Activity Doctor, Finish Review, and flex image/video.',
         twitterTitle: 'Gaspool - Self-Hosted Endurance Tracker',
-        twitterDescription: 'Self-hosted endurance tracker with route planner, voice navigation, stealth mode, peleton radar, GPX import/export, personal best, water and food reminders, timezone-safe timing, and flex image/video.',
+        twitterDescription: 'Self-hosted endurance tracker with route planner, voice navigation, stealth mode, peleton radar, GPX import/export, personal best, water and food reminders, timezone-safe timing, Activity Doctor, Finish Review, and flex image/video.',
         jsonDescription: 'Gaspool is a self-hosted endurance tracker for people who go far.',
-        softwareDescription: 'Self-hosted endurance tracker for cycling, running, walking, hiking, and long-distance adventures with route planner, voice navigation, peleton radar, stealth mode, GPX import/export, heatmap, personal best, matched activities, personal segments, water and food reminders, rest blocks, calendar view, timezone-safe timing, public profile, and flex image/video.',
+        softwareDescription: 'Self-hosted endurance tracker for cycling, running, walking, hiking, and long-distance adventures with route planner, voice navigation, peleton radar, stealth mode, GPX import/export, heatmap, personal best, matched activities, personal segments, water and food reminders, rest blocks, calendar view, timezone-safe timing, Activity Doctor, Finish Review, public profile, and flex image/video.',
         text: {
           'Fitur': 'Features',
           'Alur': 'Flow',
@@ -1401,6 +1408,9 @@
           'Kalender': 'Calendar',
           'Calendar view aktivitas': 'Activity calendar view',
           'Lihat konsistensi aktivitas dalam kalender bulanan, lengkap dengan jumlah sesi dan total kilometer per tanggal.': 'See activity consistency in a monthly calendar, with session count and total kilometers per date.',
+          'Doctor': 'Doctor',
+          'Finish Review dan Activity Doctor': 'Finish Review and Activity Doctor',
+          'Scan data sebelum save, cek aktivitas lama, buat backup R2, lalu auto-repair aman untuk route JSON, GPS point, rest gap, metadata, dan statistik D1.': 'Scan data before saving, check older activities, create an R2 backup, then safely auto-repair route JSON, GPS points, rest gaps, metadata, and D1 stats.',
           'Flex': 'Flex',
           'Gambar dan video recap': 'Image and video recaps',
           'Ekspor kartu statistik, share map card, cinematic route recap video, dan peleton recap untuk pamer hasil gowes dengan gaya Gaspool.': 'Export stat cards, share map cards, cinematic route recap videos, and peleton recaps in Gaspool style.',
